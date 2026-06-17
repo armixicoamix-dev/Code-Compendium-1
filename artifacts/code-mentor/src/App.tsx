@@ -88,7 +88,7 @@ function App() {
     Array.isArray(persisted.flaskPerRound) ? persisted.flaskPerRound : [],
   );
   const [fastapiPerRound, setFastapiPerRound] = useState<RoundResult[]>(
-    Array.isArray((persisted as any).fastapiPerRound) ? (persisted as any).fastapiPerRound : [],
+    Array.isArray(persisted.fastapiPerRound) ? persisted.fastapiPerRound : [],
   );
   const [webPerRound, setWebPerRound] = useState<RoundResult[]>(
     Array.isArray(persisted.webPerRound) ? persisted.webPerRound : [],
@@ -105,7 +105,8 @@ function App() {
       const safePhase =
         phase.kind === "flashcards" ||
         phase.kind === "playground" ||
-        phase.kind === "html-playground"
+        phase.kind === "html-playground" ||
+        phase.kind === "sql-playground"
           ? { kind: "welcome" as const }
           : phase;
       sessionStorage.setItem(

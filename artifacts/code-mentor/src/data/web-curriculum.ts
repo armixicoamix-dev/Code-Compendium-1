@@ -145,13 +145,13 @@ mark { background: #fbbf24; color: #000; padding: 0 0.2em; border-radius: 2px; }
 <a href="tel:+79001234567">+7 900 123-45-67</a>
 
 <h2 id="section2">Изображения</h2>
-<img src="https://via.placeholder.com/300x150/6366f1/fff?text=Пример+изображения"
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzYzNjZmMSIgcng9IjQiLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSIxODAiIGhlaWdodD0iMTQiIHJ4PSI3IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIyMCIgeT0iNDQiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTAiIHJ4PSI1IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjI1Ii8+PGNpcmNsZSBjeD0iMjU4IiBjeT0iNzUiIHI9IjQwIiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjEiLz48L3N2Zz4="
      alt="Пример изображения 300x150"
      width="300" height="150"
      loading="lazy">
 
 <figure>
-  <img src="https://via.placeholder.com/200x100/22c55e/fff?text=С+подписью"
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzIyYzU1ZSIgcng9IjQiLz48cmVjdCB4PSIxNCIgeT0iMTUiIHdpZHRoPSIxMTAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIxNCIgeT0iMzYiIHdpZHRoPSI3MCIgaGVpZ2h0PSI5IiByeD0iNCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9Ii4yNSIvPjwvc3ZnPg=="
        alt="Изображение с подписью" width="200" height="100">
   <figcaption>Подпись к изображению через figcaption</figcaption>
 </figure>`,
@@ -422,7 +422,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
     <p>Путь к профессии начинается с базовых знаний.</p>
 
     <figure>
-      <img src="https://via.placeholder.com/400x200/6366f1/fff?text=Фото"
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzYzNjZmMSIgcng9IjQiLz48cmVjdCB4PSIyNCIgeT0iMjgiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTYiIHJ4PSI4IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIyNCIgeT0iNTQiIHdpZHRoPSIxNTAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iLjI1Ii8+PGNpcmNsZSBjeD0iMzIwIiBjeT0iMTAwIiByPSI2MCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9Ii4xIi8+PC9zdmc+"
            alt="Разработчик за работой" width="400" height="200">
       <figcaption>Разработчик за работой</figcaption>
     </figure>
@@ -980,7 +980,7 @@ console.log('border-box реальная ширина:', r2.width + 'px (ров�
 .bg-demo {
   background:
     linear-gradient(135deg, rgba(99,102,241,0.8), rgba(168,85,247,0.8)),
-    url('https://via.placeholder.com/400x80');
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iODAiIGZpbGw9IiM2MzY2ZjEiIHJ4PSI0Ii8+PC9zdmc+");
   background-size: cover;
   border-radius: 8px;
   padding: 1.5rem;

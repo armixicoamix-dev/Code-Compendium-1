@@ -175,12 +175,17 @@ export function parseBlocks(text: string): RichBlock[] {
       continue;
     }
 
-    // ── Paragraph: stop at blank line, fence, bullet, numbered, table
+    // ── Paragraph: stop at blank line, fence, bullet, numbered, table, heading, divider
     const paraLines: string[] = [];
     while (
       i < lines.length &&
       lines[i].trim() !== "" &&
       !lines[i].trim().startsWith("```") &&
+      !lines[i].trim().startsWith("## ") &&
+      !lines[i].trim().startsWith("### ") &&
+      lines[i].trim() !== "---" &&
+      lines[i].trim() !== "***" &&
+      lines[i].trim() !== "___" &&
       !/^\s*[-•*]\s+/.test(lines[i]) &&
       !/^\s*\d+[.)]\s+/.test(lines[i]) &&
       !isTableRow(lines[i])
