@@ -577,7 +577,20 @@ export function LessonView({
           )}
 
           {/* Bottom download */}
-          <div className="flex justify-end pt-2">
+          <div className="flex flex-wrap justify-end gap-2 pt-2">
+            {lesson.title.toLowerCase().includes("fastapi") && (
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="gap-2 text-xs touch-target border-accent/40 text-accent hover:text-accent hover:bg-accent/10"
+              >
+                <a href={`${import.meta.env.BASE_URL}app.py`} download="app.py">
+                  <Download className="h-4 w-4" />
+                  Скачать app.py
+                </a>
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"

@@ -47,6 +47,24 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+    warmup: {
+      clientFiles: [
+        "./src/main.tsx",
+        "./src/App.tsx",
+        "./src/data/fastapi-curriculum.ts",
+        "./src/data/flask-curriculum.ts",
+        "./src/data/curriculum.ts",
+        "./src/data/curriculum-advanced.ts",
+        "./src/data/web-curriculum.ts",
+        "./src/data/sql-curriculum.ts",
+        "./src/data/postgres-curriculum.ts",
+        "./src/data/junior-curriculum.ts",
+        "./src/data/middle-curriculum.ts",
+        "./src/data/senior-curriculum.ts",
+        "./src/components/Welcome.tsx",
+        "./src/components/LessonView.tsx",
+      ],
+    },
   },
   preview: {
     port,

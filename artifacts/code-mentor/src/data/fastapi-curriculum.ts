@@ -1181,7 +1181,7 @@ const fa2: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Здесь все ответы на задания раунда с подробным разбором",
+        tagline: "Pydantic — разбор шаблонов, поля Field(), вложенные модели на практике",
         body:
           "### Упражнение 1: «Базовая Pydantic-модель»\n\n" +
           "```python\n" +
@@ -1834,7 +1834,7 @@ const fa3: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Полный разбор всех заданий раунда 3",
+        tagline: "HTTPException, Depends, валидация — полные рабочие примеры",
         body:
           "### Упражнение 1: «HTTPException в маршрутах»\n\n" +
           "```python\n" +
@@ -3151,7 +3151,7 @@ const fa5: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Все ответы на задания раунда 5",
+        tagline: "APIRouter, prefix, tags, зависимости роутера — полные рабочие примеры",
         body:
           "### Упражнение 1: «Создание APIRouter»\n\n" +
           "```python\n" +
@@ -3795,7 +3795,7 @@ const fa6: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Все ответы на задания раунда 6",
+        tagline: "SQLAlchemy + FastAPI: сессии, CRUD, схемы запроса и ответа",
         body:
           "### Упражнение 1: «Настройка SQLAlchemy + FastAPI»\n\n" +
           "```python\n" +
@@ -4478,7 +4478,7 @@ const fa7: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Все ответы на задания раунда 7",
+        tagline: "JWT-токены, OAuth2PasswordBearer, защита маршрутов — полные примеры",
         body:
           "### Упражнение 1: «OAuth2 схема и токен»\n\n" +
           "```python\n" +
@@ -5104,7 +5104,7 @@ const fa8: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Все ответы на задания раунда 8",
+        tagline: "Middleware, CORS, BackgroundTasks — полные рабочие примеры",
         body:
           "### Упражнение 1: «CORSMiddleware настройка»\n\n" +
           "```python\n" +
@@ -5760,7 +5760,7 @@ const fa9: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Все ответы на задания раунда 9",
+        tagline: "TestClient, тестирование GET/POST/auth-маршрутов — полные примеры",
         body:
           "### Упражнение 1: «TestClient базовые тесты»\n\n" +
           "```python\n" +
@@ -6506,7 +6506,7 @@ const fa10: Round = {
       },
       {
         heading: "Примеры и пояснения",
-        tagline: "Все ответы на задания финального раунда",
+        tagline: "async def, Lifespan, деплой uvicorn+gunicorn — полные примеры",
         body:
           "### Упражнение 1: «Async маршруты»\n\n" +
           "```python\n" +
