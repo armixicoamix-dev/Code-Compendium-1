@@ -50,6 +50,13 @@ function blocksToHtml(text: string): string {
           .join("\n");
         return `<table class="md-table">\n<thead><tr>${headerCells}</tr></thead>\n<tbody>\n${bodyRows}\n</tbody>\n</table>`;
       }
+      if (block.kind === "divider") {
+        return `<hr class="section-divider" />`;
+      }
+      if (block.kind === "heading") {
+        const tag = block.level === 2 ? "h4" : "h5";
+        return `<${tag} class="body-heading body-heading-${block.level}">${inlineToHtml(block.text)}</${tag}>`;
+      }
       if (block.kind === "bullets") {
         const items = block.items.map((item) => `<li>${inlineToHtml(item)}</li>`).join("\n");
         return `<ul>\n${items}\n</ul>`;
@@ -236,6 +243,9 @@ function lessonToHtml(lesson: RoundLesson): string {
   .md-table th { background: rgba(77,150,255,.12); color: #fff; padding: .5rem .75rem; text-align: left; border: 1px solid var(--border); font-weight: 700; }
   .md-table td { padding: .4rem .75rem; border: 1px solid var(--border); color: var(--text); }
   .md-table tr:nth-child(even) td { background: rgba(255,255,255,.025); }
+  h4.body-heading-2 { font-size: 1rem; font-weight: 700; color: #fff; margin: 1.4rem 0 .5rem; padding-bottom: .35rem; border-bottom: 1px solid var(--border); }
+  h5.body-heading-3 { font-size: .85rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; margin: 1.1rem 0 .4rem; }
+  hr.section-divider { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; opacity: .5; }
   footer { margin-top: 3rem; text-align: center; color: var(--muted); font-size: .8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
   @media (max-width: 640px) {
     body { padding: 1.25rem .875rem 4rem; }

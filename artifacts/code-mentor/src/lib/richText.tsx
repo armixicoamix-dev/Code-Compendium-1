@@ -48,7 +48,9 @@ export type RichBlock =
   | { kind: "bullets"; items: string[] }
   | { kind: "numbered"; items: string[] }
   | { kind: "fence"; lang: string; code: string }
-  | { kind: "table"; header: string[]; rows: string[][] };
+  | { kind: "table"; header: string[]; rows: string[][] }
+  | { kind: "heading"; level: 2 | 3; text: string }
+  | { kind: "divider" };
 
 /** Parse a single table row string like "| a | b | c |" into cells */
 function parseTableRow(line: string): string[] {
@@ -103,6 +105,25 @@ export function parseBlocks(text: string): RichBlock[] {
 
     // ── Blank line ──────────────────────────────────────────────────
     if (trimmed === "") {
+      i++;
+      continue;
+    }
+
+    // ── Horizontal divider ───────────────────────────────────────────
+    if (trimmed === "---" || trimmed === "***" || trimmed === "___") {
+      blocks.push({ kind: "divider" });
+      i++;
+      continue;
+    }
+
+    // ── Headings: ## and ### ─────────────────────────────────────────
+    if (trimmed.startsWith("### ")) {
+      blocks.push({ kind: "heading", level: 3, text: trimmed.slice(4).trim() });
+      i++;
+      continue;
+    }
+    if (trimmed.startsWith("## ")) {
+      blocks.push({ kind: "heading", level: 2, text: trimmed.slice(3).trim() });
       i++;
       continue;
     }
@@ -229,6 +250,29 @@ export function renderRichText(text: string): ReactNode {
                 </tbody>
               </table>
             </div>
+          );
+        }
+        if (block.kind === "divider") {
+          return <hr key={bi} className="my-4 border-border/40" />;
+        }
+        if (block.kind === "heading") {
+          if (block.level === 2) {
+            return (
+              <h2
+                key={bi}
+                className="mt-5 mb-2 text-base font-semibold text-foreground/95 border-b border-border/30 pb-1"
+              >
+                {renderInline(block.text)}
+              </h2>
+            );
+          }
+          return (
+            <h3
+              key={bi}
+              className="mt-4 mb-1.5 text-sm font-semibold text-primary/90 uppercase tracking-wide"
+            >
+              {renderInline(block.text)}
+            </h3>
           );
         }
         if (block.kind === "bullets") {
