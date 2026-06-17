@@ -443,6 +443,77 @@ const fa1: Round = {
         ],
         analogy: "FastAPI маршруты — как пункты приёма на почте. @app.get('/посылки/{id}') — это окошко 'получить посылку по номеру'. Номер посылки (path param) — прямо в названии окошка. Дополнительные вопросы (query params) — задаёшь отдельно: 'Нужна ли подпись? (paid=true)'. Сортировщик (FastAPI) сам проверяет что номер посылки — это число, а не буквы.",
       },
+      {
+        heading: "Примеры и пояснения",
+        body:
+          "### Заполни пропуски — Упражнение 1: «Первое FastAPI-приложение»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI      # {{0}} = fastapi\n" +
+          "app = FastAPI()                  # {{1}} = FastAPI\n" +
+          "@app.get('/')                    # {{2}} = get\n" +
+          "def read_root(): ...\n\n" +
+          "def read_item(item_id: int,      # {{3}} = int\n" +
+          "              q: str = None):    # {{4}} = None\n" +
+          "    ...\n" +
+          "# uvicorn main:app --reload      # {{5}} = reload\n" +
+          "```\n\n" +
+          "**Объяснение каждого пропуска:**\n" +
+          "- `{{0}} = fastapi` — название пакета в нижнем регистре. `import fastapi` или `from fastapi import ...`\n" +
+          "- `{{1}} = FastAPI` — класс с заглавной буквы. `app = FastAPI()` — стандартное имя переменной\n" +
+          "- `{{2}} = get` — HTTP-метод GET. @app.get() регистрирует GET-маршрут\n" +
+          "- `{{3}} = int` — тип числового ID в пути. FastAPI автоматически конвертирует строку URL в int\n" +
+          "- `{{4}} = None` — дефолтное значение query параметра (необязательный)\n" +
+          "- `{{5}} = reload` — флаг `--reload` перезапускает сервер при изменениях\n\n" +
+          "---\n\n" +
+          "### Заполни пропуски — Упражнение 2: «Параметры пути и запроса»\n\n" +
+          "```python\n" +
+          "def get_product(product_id: int):  # {{0}} = int\n" +
+          "def list_products(category: str = None, limit: int = 10):\n" +
+          "#                  {{1}} = str      {{2}} = 10\n" +
+          "@app.get('/users/{user_id}/orders')  # {{3}} = get\n" +
+          "def get_user_orders(user_id: int, paid: bool = True):\n" +
+          "#                              {{4}} = bool\n" +
+          "@app.post('/products')         # {{5}} = post\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Заполни пропуски — Упражнение 3: «Метаданные и теги»\n\n" +
+          "```python\n" +
+          "app = FastAPI(\n" +
+          "    title='Bookstore API',    # {{0}} = title\n" +
+          "    description='...',        # {{1}} = description\n" +
+          "    version='0.1.0',          # {{2}} = version\n" +
+          ")\n" +
+          "@app.get('/books', tags=['Books'])    # {{3}} = tags\n" +
+          "@app.get('/books/{id}', tags=['Books'], summary='...')  # {{4}} = summary\n" +
+          "def health(): return {'status': 'ok'}  # {{5}} = status\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Ключевые отличия FastAPI\n\n" +
+          "**Pydantic — основа FastAPI.** FastAPI использует Pydantic для автоматической валидации входящих данных и генерации документации. Достаточно указать тип параметра — FastAPI сам проверит формат и вернёт ошибку 422, если данные неверны. Flask такого механизма не имеет — там нужно валидировать вручную.\n\n" +
+          "**ASGI-сервер uvicorn.** FastAPI — асинхронный фреймворк (ASGI). Для его запуска нужен uvicorn: команда `uvicorn main:app --reload` запускает приложение в режиме разработки с автоперезагрузкой при изменениях файлов. Flask использует синхронный Werkzeug.\n\n" +
+          "**Автодокументация из кода.** FastAPI генерирует интерактивный Swagger UI по адресу `/docs` и ReDoc по `/redoc` автоматически — на основе типов и аннотаций твоего кода. Ты не пишешь YAML-схемы руками: декораторы маршрутов и Pydantic-модели становятся документацией сами.\n\n" +
+          "---\n\n" +
+          "### Практика: как делать задание «API для задач (Todo)»\n\n" +
+          "**Шаг 1.** Импортируй и создай app:\n" +
+          "```python\n" +
+          "from fastapi import FastAPI\n" +
+          "app = FastAPI()\n" +
+          "todos = []  # список в памяти\n" +
+          "```\n\n" +
+          "**Шаг 2.** Добавь маршруты по одному:\n" +
+          "```python\n" +
+          "@app.get('/')\n" +
+          "def root(): return {'message': 'Todo API'}\n\n" +
+          "@app.get('/todos')\n" +
+          "def get_todos(): return todos\n\n" +
+          "@app.get('/todos/{todo_id}')\n" +
+          "def get_todo(todo_id: int): return {'id': todo_id}\n\n" +
+          "@app.delete('/todos/{todo_id}')\n" +
+          "def delete_todo(todo_id: int): return {'deleted': True}\n" +
+          "```\n\n" +
+          "**Шаг 3.** Запусти через кнопку Python — проверь что нет ошибок синтаксиса.\n" +
+          "Если видишь `✓ FastAPI-приложение создано!` — всё правильно!",
+      },
     ],
     cheatSheet: [
       "`from fastapi import FastAPI; app = FastAPI()` — создать приложение.",
@@ -1108,6 +1179,85 @@ const fa2: Round = {
         ],
         analogy: "Pydantic BaseModel — как анкета с чёткими правилами заполнения. Поле name: str = Field(min_length=2) — это как 'имя: не менее 2 символов'. Если кто-то оставит пустым — анкета возвращается с отметкой ошибки (422). Optional[str] = None — как поле 'второе имя (необязательно)'. model_dump() — как сканирование заполненной анкеты в PDF.",
       },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Здесь все ответы на задания раунда с подробным разбором",
+        body:
+          "### Упражнение 1: «Базовая Pydantic-модель»\n\n" +
+          "```python\n" +
+          "from pydantic import BaseModel  # {{0}} = BaseModel\n" +
+          "from typing import Optional     # {{1}} = Optional\n\n" +
+          "class User(BaseModel):          # {{2}} = BaseModel (наследуемся)\n" +
+          "    name: str\n" +
+          "    email: str\n" +
+          "    age: int                    # {{3}} = int\n" +
+          "    bio: Optional[str] = None   # {{4}} = None\n\n" +
+          "@app.post('/users')\n" +
+          "def create_user(user: User):    # {{5}} = User\n" +
+          "    return user.model_dump()    # {{6}} = model_dump\n" +
+          "```\n\n" +
+          "**Объяснение:**\n" +
+          "- `{{0}} = BaseModel` — импортируем базовый класс для всех Pydantic-моделей\n" +
+          "- `{{1}} = Optional` — нужен для `Optional[str]` (необязательная строка)\n" +
+          "- `{{2}} = BaseModel` — класс User НАСЛЕДУЕТ BaseModel, получая всю магию Pydantic\n" +
+          "- `{{3}} = int` — возраст это целое число\n" +
+          "- `{{4}} = None` — дефолт для необязательного поля\n" +
+          "- `{{5}} = User` — тип параметра = модель → FastAPI ожидает JSON-тело с полями User\n" +
+          "- `{{6}} = model_dump` — метод Pydantic v2 для конвертации в dict\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «Field с ограничениями»\n\n" +
+          "```python\n" +
+          "from pydantic import BaseModel, Field  # {{0}} = Field\n\n" +
+          "class Product(BaseModel):\n" +
+          "    name: str = Field(min_length=1, max_length=100)  # {{1}} = Field\n" +
+          "    price: float = Field(gt=0.01)    # {{2}} = gt (strictly greater than)\n" +
+          "    stock: int = Field(ge=0)         # {{3}} = ge (greater or equal)\n" +
+          "    discount: float = Field(ge=0.0, le=1.0)  # {{4}}=ge, {{5}}=le\n" +
+          "    tags: list[str] = Field(default_factory=list)  # {{1}} = Field\n" +
+          "```\n\n" +
+          "**Мнемоника:** gt=**g**reater **t**han (>), ge=**g**reater or **e**qual (>=), le=**l**ess or **e**qual (<=)\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Вложенные модели в FastAPI»\n\n" +
+          "```python\n" +
+          "class Tag(BaseModel):\n" +
+          "    name: str                  # {{0}} = str\n\n" +
+          "class Article(BaseModel):\n" +
+          "    tags: List[Tag] = []       # {{1}} = List\n" +
+          "    published: bool = False    # {{2}} = bool\n\n" +
+          "@app.post('/articles', response_model=ArticleResponse)  # {{3}}=response_model, {{4}}=ArticleResponse\n" +
+          "def create_article(article: Article):\n" +
+          "    return {'id': 1, **article.model_dump()}  # {{5}} = model_dump\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Необязательные поля и сериализация\n\n" +
+          "**Необязательное поле требует двух вещей одновременно.** Недостаточно написать только `bio: Optional[str]` или только `bio: str = None` — нужно и то, и другое: `bio: Optional[str] = None`. Тип говорит Pydantic что значение может быть `None`, а `= None` задаёт значение по умолчанию. В Python 3.10+ можно писать короче: `bio: str | None = None` — это эквивалент. Без одной из частей Pydantic либо потребует поле обязательным, либо не будет знать что `None` допустимо.\n\n" +
+          "**model_dump() — главный метод сериализации.** Метод `model_dump()` преобразует Pydantic-объект в обычный Python-словарь `dict`. Это нужно для: передачи данных в функции, которые ожидают dict; создания нового объекта с изменениями через `Model(**existing.model_dump(), field=new_value)`; логирования и отладки. Раньше (Pydantic v1) этот метод назывался `.dict()`.\n\n" +
+          "---\n\n" +
+          "### Практика: Схемы для Blog API\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI\n" +
+          "from pydantic import BaseModel, Field\n" +
+          "from typing import Optional\n\n" +
+          "class Category(BaseModel):\n" +
+          "    name: str = Field(min_length=1, max_length=50)\n\n" +
+          "class PostCreate(BaseModel):\n" +
+          "    title: str = Field(min_length=3, max_length=200)\n" +
+          "    body: str = Field(min_length=1)\n" +
+          "    category: Category  # вложенная!\n" +
+          "    published: bool = False\n\n" +
+          "class PostResponse(BaseModel):\n" +
+          "    id: int\n" +
+          "    title: str\n" +
+          "    published: bool\n\n" +
+          "app = FastAPI()\n\n" +
+          "@app.post('/posts', response_model=PostResponse, status_code=201)\n" +
+          "def create_post(post: PostCreate):\n" +
+          "    return {'id': 1, 'title': post.title, 'published': post.published}\n\n" +
+          "@app.get('/posts/{post_id}', response_model=PostResponse)\n" +
+          "def get_post(post_id: int):\n" +
+          "    return {'id': post_id, 'title': 'Post', 'published': True}\n" +
+          "```",
+      },
     ],
     cheatSheet: [
       "`class Model(BaseModel): field: type` — объявить модель.",
@@ -1681,6 +1831,90 @@ const fa3: Round = {
           "Depends(get_user()) с скобками — вызовет функцию сразу, не передаст как зависимость!",
           "Зависимость без type hint: def fn(user=Depends(get_user)) — работает, но с type hint IDE лучше помогает.",
         ],
+      },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Полный разбор всех заданий раунда 3",
+        body:
+          "### Упражнение 1: «HTTPException в маршрутах»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, HTTPException  # {{0}} = HTTPException\n\n" +
+          "# if item_id not in items:\n" +
+          "raise HTTPException(               # {{1}} = HTTPException\n" +
+          "    status_code=404,               # {{2}} = 404 (Not Found)\n" +
+          "    detail='Item not found'\n" +
+          ")\n\n" +
+          "# DELETE:\n" +
+          "raise HTTPException(status_code=404)  # {{3}} = 404\n" +
+          "return {'deleted': True}              # {{4}} = True\n\n" +
+          "# Admin:\n" +
+          "raise HTTPException(status_code=403)  # {{5}} = status_code, {{6}} = 403\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «Depends — зависимость пагинации»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, Depends  # {{0}} = Depends\n\n" +
+          "def common_params(\n" +
+          "    skip: int = 0,\n" +
+          "    limit: int = 10,  # {{1}} = 10\n" +
+          "):\n" +
+          "    return {'skip': skip, 'limit': limit}\n\n" +
+          "@app.get('/users')\n" +
+          "def list_users(params: dict = Depends(common_params)):  # {{2}} = Depends\n" +
+          "    ...\n\n" +
+          "@app.get('/products')\n" +
+          "def list_products(params: dict = Depends(common_params)):  # {{3}} = common_params\n" +
+          "    ...\n\n" +
+          "class Filter:\n" +
+          "    def __call__(self):   # {{4}} = call (магический метод callable)\n" +
+          "        return {'active': self.active}\n\n" +
+          "@app.get('/items')\n" +
+          "def list_items(f = Depends(Filter)):  # {{5}} = Depends\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Вложенные зависимости»\n\n" +
+          "```python\n" +
+          "def get_token(token: str):\n" +
+          "    if token not in USERS_DB:\n" +
+          "        raise HTTPException(401)  # {{0}} = HTTPException\n" +
+          "    return token\n\n" +
+          "def get_user(token: str = Depends(get_token)):  # {{1}} = Depends\n" +
+          "    return USERS_DB[token]\n\n" +
+          "def require_admin(user: dict = Depends(get_user)):  # {{2}} = get_user\n" +
+          "    if user['role'] != 'admin':  # {{3}} = admin\n" +
+          "        raise HTTPException(403)\n\n" +
+          "@app.get('/admin/stats')\n" +
+          "def admin_stats(admin = Depends(require_admin)):  # {{4}} = require_admin\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Валидация и механизм зависимостей\n\n" +
+          "**HTTP 422 — ошибка валидации.** FastAPI возвращает статус 422 Unprocessable Entity автоматически, когда входящие данные не прошли проверку Pydantic. Например: передана строка \'abc\' там где ожидается `int`, или обязательное поле отсутствует в теле запроса. FastAPI включает в ответ подробный JSON с описанием каждой ошибки поля — это удобно при отладке. Тебе не нужно писать try/except для базовой валидации.\n\n" +
+          "**Depends — IoC-контейнер FastAPI.** Отличие Depends от обычного вызова в том, что FastAPI сам создаёт и передаёт зависимость в функцию маршрута. Depends умеет: читать параметры из запроса (query, header, cookie, path); поддерживать вложенные зависимости (зависимость может сама зависеть от другого Depends); поддерживать `yield`-зависимости для управления ресурсами (соединения к БД). Обычный вызов функции ничего этого не может — он не имеет доступа к объекту запроса.\n\n" +
+          "---\n\n" +
+          "### Практика: API с аутентификацией\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, Depends, HTTPException\n\n" +
+          "USERS = {\n" +
+          "    'token1': {'name': 'Admin', 'role': 'admin'},\n" +
+          "    'token2': {'name': 'User', 'role': 'user'},\n" +
+          "}\n\n" +
+          "def get_current_user(token: str):\n" +
+          "    user = USERS.get(token)\n" +
+          "    if not user:\n" +
+          "        raise HTTPException(status_code=401, detail='Неверный токен')\n" +
+          "    return user\n\n" +
+          "def require_admin(user: dict = Depends(get_current_user)):\n" +
+          "    if user['role'] != 'admin':\n" +
+          "        raise HTTPException(status_code=403, detail='Только для администраторов')\n" +
+          "    return user\n\n" +
+          "app = FastAPI()\n\n" +
+          "@app.get('/public')\n" +
+          "def public(): return {'message': 'Публичная страница'}\n\n" +
+          "@app.get('/me')\n" +
+          "def me(user = Depends(get_current_user)): return user\n\n" +
+          "@app.get('/admin')\n" +
+          "def admin(user = Depends(require_admin)): return user\n" +
+          "```",
       },
     ],
     cheatSheet: [
@@ -2265,6 +2499,103 @@ const fa4: Round = {
         ],
         analogy: "response_model — как пропускная система на выходе из склада. Даже если внутри склада есть секретные документы, на выход пропускают только то, что разрешено (UserPublic). JSONResponse — как VIP-пропуск: полный контроль над тем что выйдет и какими маршрутами.",
       },
+      {
+        heading: "Примеры и пояснения",
+        body:
+          "### Упражнение 1: «response_model и status_code»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, status  # {{0}} = status\n\n" +
+          "@app.post('/users',\n" +
+          "          response_model=UserOut,     # {{1}} = response_model\n" +
+          "          status_code=               # {{2}} = status_code\n" +
+          "              201)                   # {{3}} = 201\n\n" +
+          "@app.get('/users/{uid}',\n" +
+          "         response_model=UserOut)     # {{4}} = UserOut\n\n" +
+          "@app.delete('/users/{uid}',\n" +
+          "            status_code=204)         # {{5}} = 204\n" +
+          "    return Response(status_code=204) # {{6}} = 204\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «JSONResponse и кастомные заголовки»\n\n" +
+          "```python\n" +
+          "from fastapi.responses import JSONResponse, Response  # {{0}}=JSONResponse, {{1}}=Response\n\n" +
+          "@app.get('/data')\n" +
+          "def get_data():\n" +
+          "    return JSONResponse(    # {{2}} = JSONResponse\n" +
+          "        content={...},\n" +
+          "        headers={...}\n" +
+          "    )\n\n" +
+          "@app.delete('/resource')\n" +
+          "def delete():\n" +
+          "    return Response(status_code=204)  # {{3}} = Response\n\n" +
+          "RedirectResponse(url='/data', status_code=302)  # {{4}} = 302\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Разные схемы ввода и вывода»\n\n" +
+          "```python\n" +
+          "class UserCreate(BaseModel):\n" +
+          "    password: str        # {{0}} = str\n\n" +
+          "class UserUpdate(BaseModel):\n" +
+          "    username: Optional[str] = None  # {{1}} = None\n\n" +
+          "class UserResponse(BaseModel):\n" +
+          "    id: int              # {{2}} = int\n\n" +
+          "@app.post('/users', response_model=UserResponse)  # {{3}} = UserResponse\n" +
+          "@app.patch('/users/{uid}', response_model=UserResponse)  # {{4}} = UserResponse\n" +
+          "def update(uid: int, update: UserUpdate): ...  # {{5}} = UserUpdate\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Модели ответов и HTTP-коды\n\n" +
+          "**response_model — схема и фильтр одновременно.** Параметр `response_model` у декоратора маршрута делает две вещи: генерирует документацию в Swagger (показывает какие поля возвращает эндпоинт) и фильтрует ответ — удаляет поля, которых нет в схеме. Это важно для безопасности: если внутренний объект содержит поле `password_hash`, а в `response_model` его нет — оно не попадёт в ответ. Без `response_model` FastAPI вернёт всё что вернула функция.\n\n" +
+          "**HTTP 204 — успех без тела.** Для операций DELETE (и иногда PUT) принято возвращать статус 204 No Content: запрос выполнен успешно, но тела ответа нет. В FastAPI это делается через `status_code=204` и `return Response(status_code=204)`. Возвращать 200 с пустым телом технически работает, но нарушает REST-конвенцию. Клиенты (браузер, frontend) интерпретируют 204 как сигнал: готово, тела нет.\\n\\n" +
+          "---\n\n" +
+          "### Практика: Полный CRUD с правильными ответами\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, HTTPException, status\n" +
+          "from fastapi.responses import Response\n" +
+          "from pydantic import BaseModel\n" +
+          "from typing import List, Optional\n\n" +
+          "class BookCreate(BaseModel):\n" +
+          "    title: str\n" +
+          "    author: str\n" +
+          "    year: int\n\n" +
+          "class BookResponse(BaseModel):\n" +
+          "    id: int\n" +
+          "    title: str\n" +
+          "    author: str\n" +
+          "    year: int\n\n" +
+          "class BookUpdate(BaseModel):\n" +
+          "    title: Optional[str] = None\n" +
+          "    author: Optional[str] = None\n\n" +
+          "app = FastAPI()\n" +
+          "books: dict[int, dict] = {}\n" +
+          "next_id = 1\n\n" +
+          "@app.get('/books', response_model=List[BookResponse])\n" +
+          "def list_books(): return list(books.values())\n\n" +
+          "@app.post('/books', response_model=BookResponse, status_code=201)\n" +
+          "def create_book(book: BookCreate):\n" +
+          "    global next_id\n" +
+          "    b = {'id': next_id, **book.model_dump()}\n" +
+          "    books[next_id] = b; next_id += 1\n" +
+          "    return b\n\n" +
+          "@app.get('/books/{book_id}', response_model=BookResponse)\n" +
+          "def get_book(book_id: int):\n" +
+          "    if book_id not in books:\n" +
+          "        raise HTTPException(404, 'Not found')\n" +
+          "    return books[book_id]\n\n" +
+          "@app.patch('/books/{book_id}', response_model=BookResponse)\n" +
+          "def update_book(book_id: int, update: BookUpdate):\n" +
+          "    if book_id not in books:\n" +
+          "        raise HTTPException(404)\n" +
+          "    b = books[book_id]\n" +
+          "    if update.title: b['title'] = update.title\n" +
+          "    if update.author: b['author'] = update.author\n" +
+          "    return b\n\n" +
+          "@app.delete('/books/{book_id}', status_code=204)\n" +
+          "def delete_book(book_id: int):\n" +
+          "    books.pop(book_id, None)\n" +
+          "    return Response(status_code=204)\n" +
+          "```",
+      },
     ],
     cheatSheet: [
       "`@app.post('/items', response_model=ItemOut, status_code=201)` — модель ответа и код.",
@@ -2817,6 +3148,50 @@ const fa5: Round = {
           "dependencies=[Depends(fn)] — Depends В списке. Не путай с параметром функции-маршрута.",
         ],
         analogy: "APIRouter — как отдел в магазине (отдел электроники, отдел книг). У каждого отдела своя вывеска (prefix='/products') и своя секция в каталоге (tags=['Products']). Менеджер магазина (app.include_router) добавляет отдел в общую карту магазина. dependencies=[Depends(охрана)] — как охранник на входе в отдел VIP.",
+      },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Все ответы на задания раунда 5",
+        body:
+          "### Упражнение 1: «Создание APIRouter»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, APIRouter  # {{0}} = APIRouter\n\n" +
+          "products_router = APIRouter(            # {{1}} = APIRouter\n" +
+          "    prefix='/products',                 # {{2}} = products\n" +
+          "    tags=['Products'],                  # {{3}} = tags\n" +
+          ")\n\n" +
+          "@products_router.get('/{product_id}')  # {{4}} = {product_id}\n" +
+          "@products_router.post('/')              # {{5}} = post\n\n" +
+          "app.include_router(products_router)     # {{6}} = include\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «Роутеры с разными prefix и tags»\n\n" +
+          "```python\n" +
+          "users = APIRouter(prefix='/users', tags=['Users'])  # {{0}} = prefix\n" +
+          "@users.get('/')                         # {{1}} = get\n\n" +
+          "orders = APIRouter(prefix='/orders', tags=['Orders'])  # {{2}} = tags\n" +
+          "@orders.post('/')                       # {{3}} = post\n\n" +
+          "app.include_router(users)               # {{4}} = users\n" +
+          "app.include_router(orders)              # {{5}} = orders\n" +
+          "print('Маршрутов:', len(app.routes))    # {{6}} = len\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Зависимости на уровне роутера»\n\n" +
+          "```python\n" +
+          "def verify_token(authorization: str = None):\n" +
+          "    if not authorization:\n" +
+          "        raise HTTPException(401)    # {{0}} = HTTPException\n\n" +
+          "protected = APIRouter(\n" +
+          "    prefix='/api',\n" +
+          "    dependencies=[Depends(verify_token)]  # {{1}} = dependencies, {{2}} = Depends\n" +
+          ")\n\n" +
+          "public = APIRouter(tags=['Public'])  # {{3}} = APIRouter\n\n" +
+          "app.include_router(protected)        # {{4}} = include\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### APIRouter и структура приложения\n\n" +
+          "**app.include_router() — аналог register_blueprint() из Flask.** APIRouter позволяет разнести маршруты по модулям, как blueprints во Flask. Создаёшь `router = APIRouter(prefix=\'/users\', tags=[\'Users\'])` в отдельном файле, добавляешь маршруты через `@router.get()`, `@router.post()` и т.д., затем подключаешь в главном приложении: `app.include_router(users_router)`. Это не просто удобство — это необходимость в любом проекте больше 3-4 эндпоинтов.\n\n" +
+          "**Как складывается финальный URL.** Prefix роутера и путь маршрута конкатенируются напрямую: `prefix=\'/users\'` + `@router.get(\'/{user_id}\')` → финальный URL `/users/{user_id}`. Поэтому путь в @router.get() должен начинаться с `/`, но не повторять prefix. Если ты зарегистрировал роутер с prefix и хочешь корневой маршрут роутера — пиши `@router.get(\'/')`, это даст `/users/`.",
       },
     ],
     cheatSheet: [
@@ -3417,6 +3792,62 @@ const fa6: Round = {
           "yield в get_db() — обязательно в try/finally чтобы закрыть сессию даже при ошибке.",
         ],
         analogy: "SQLAlchemy Session — как транзакция в банке. db.add() — положить деньги на стол кассира. db.commit() — кассир записал в реестр (деньги теперь в банке). db.refresh() — получить квитанцию с номером транзакции (id). db.close() — уйти из банка (закрыть сессию). Если что-то пошло не так до commit — деньги возвращаются (rollback).",
+      },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Все ответы на задания раунда 6",
+        body:
+          "### Упражнение 1: «Настройка SQLAlchemy + FastAPI»\n\n" +
+          "```python\n" +
+          "from sqlalchemy.orm import ..., Session  # {{0}} = Session\n" +
+          "from fastapi import FastAPI, Depends     # {{1}} = Depends\n\n" +
+          "engine = create_engine(\n" +
+          "    DATABASE_URL,\n" +
+          "    connect_args={'check_same_thread': False}  # {{2}} = check\n" +
+          ")\n" +
+          "SessionLocal = sessionmaker(bind=engine)  # {{3}} = sessionmaker\n\n" +
+          "class Task(Base):\n" +
+          "    __tablename__ = 'tasks'  # {{4}} = tasks\n" +
+          "    done = Column(Boolean, ...)  # {{5}} = Boolean\n\n" +
+          "def get_db():\n" +
+          "    db = SessionLocal()    # {{6}} = SessionLocal\n" +
+          "    try:\n" +
+          "        yield db           # {{7}} = yield\n" +
+          "    finally:\n" +
+          "        db.close()\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «CRUD маршруты с БД»\n\n" +
+          "```python\n" +
+          "class UserOut(BaseModel):\n" +
+          "    model_config = {'from_attributes': True}  # {{0}} = from_attributes\n\n" +
+          "def get_db():\n" +
+          "    ...finally: db.close()  # {{1}} = close\n\n" +
+          "@app.get('/users')\n" +
+          "def get_users(db = Depends(get_db)):  # {{2}} = get_db\n" +
+          "    return db.query(UserDB).all()  # {{3}} = query\n\n" +
+          "@app.post('/users')\n" +
+          "def create_user(user: UserCreate, db = Depends(get_db)):\n" +
+          "    db_user = UserDB(**user.model_dump())  # {{4}} = model_dump\n" +
+          "    db.add(db_user)    # {{5}} = add\n" +
+          "    db.commit()        # {{6}} = commit\n" +
+          "    ...filter(UserDB.id == uid).first()  # {{7}} = first\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Удаление и обновление в БД»\n\n" +
+          "```python\n" +
+          "...filter(ItemDB.id == item_id).first()  # {{0}} = first\n" +
+          "raise HTTPException(404)  # {{1}} = 404\n" +
+          "data.model_dump(exclude_unset=True)  # {{2}} = unset\n" +
+          "update_data.items()  # {{3}} = items\n" +
+          "db.commit()  # {{4}} = commit\n" +
+          "db.delete(item)  # {{5}} = delete\n" +
+          "return Response(status_code=204)  # {{6}} = 204\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Управление сессией и транзакциями\n\n" +
+          "**yield в get_db() гарантирует закрытие сессии.** Функция с yield — генератор: код до yield — startup (открываем сессию), код после (в finally) — cleanup (закрываем сессию). Блок finally выполняется ВСЕГДА, даже если маршрут бросил исключение. Без finally незакрытые сессии накапливаются и исчерпывают пул подключений к БД. FastAPI специально поддерживает yield-зависимости для управления ресурсами.\n\n" +
+          "**db.commit() фиксирует транзакцию.** SQLAlchemy работает транзакционно: все изменения (INSERT, UPDATE, DELETE) накапливаются в памяти и не попадают в БД до db.commit(). Это позволяет откатить операции через db.rollback(). db.flush() отправляет SQL на сервер, но не фиксирует — используется когда нужен автогенерированный id до commit.",
       },
     ],
     cheatSheet: [
@@ -4045,6 +4476,67 @@ const fa7: Round = {
         ],
         analogy: "JWT — как пропуск в здание. При входе (POST /token) охрана проверяет паспорт (логин/пароль) и выдаёт временный пропуск (JWT токен). На каждом следующем входе предъявляешь пропуск — охрана проверяет подпись и срок действия. Потерял пропуск (token утёк) — до истечения срока злоумышленник войдёт. Поэтому срок действия небольшой (15-60 мин), а SECRET_KEY меняется при компрометации.",
       },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Все ответы на задания раунда 7",
+        body:
+          "### Упражнение 1: «OAuth2 схема и токен»\n\n" +
+          "```python\n" +
+          "from fastapi.security import OAuth2PasswordBearer  # {{0}} = OAuth2PasswordBearer\n" +
+          "from jose import jwt                               # {{1}} = jwt\n\n" +
+          "oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')  # {{2}} = tokenUrl\n\n" +
+          "def create_token(email: str) -> str:\n" +
+          "    expire = datetime.utcnow() + timedelta(minutes=30)\n" +
+          "    return jwt.encode({'sub': email, 'exp': expire},  # {{3}} = sub\n" +
+          "                     SECRET_KEY, ALGORITHM)           # {{4}} = ALGORITHM\n\n" +
+          "def get_user(token: str = Depends(oauth2_scheme)):    # {{5}} = oauth2_scheme\n" +
+          "    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])\n" +
+          "    return payload['sub']  # {{6}} = sub\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «Login эндпоинт»\n\n" +
+          "```python\n" +
+          "from fastapi.security import OAuth2PasswordRequestForm  # {{0}} = OAuth2PasswordRequestForm\n\n" +
+          "@app.post('/auth/token')\n" +
+          "def login(form: OAuth2PasswordRequestForm = Depends()):  # {{1}} = Depends()\n" +
+          "    user = USERS.get(form.username)                       # {{2}} = username\n" +
+          "    if not user or user['password'] != form.password:    # {{3}} = password\n" +
+          "        raise HTTPException(401)\n" +
+          "    token = create_token(form.username)                   # {{4}} = username\n" +
+          "    return {'access_token': token, 'token_type': 'bearer'}  # {{5}} = bearer\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Структура JWT и схемы аутентификации\n\n" +
+          "**Что хранится в payload JWT.** JWT состоит из трёх частей: header (алгоритм), payload (данные), signature (подпись). В payload хранят: sub (subject — email или user_id), exp (время истечения в Unix timestamp), опционально role или scopes. Payload не зашифрован — его можно декодировать без ключа (это base64url). Подпись лишь гарантирует, что данные не были изменены. Поэтому в payload никогда не кладут пароли.\n\n" +
+          "**Bearer токен vs Basic Auth.** Basic Auth передаёт base64(username:password) в каждом запросе — перехватив один запрос, атакующий получает пароль. Bearer — временный токен: пользователь вводит пароль один раз при логине, получает токен с ограниченным сроком жизни. Даже если токен похищен — он истечёт сам. В FastAPI: OAuth2PasswordBearer(tokenUrl=...) в Depends автоматически читает Bearer-токен из заголовка Authorization.\n\n" +
+          "---\n\n" +
+          "### Практика: Полный Auth API\n\n" +
+          "Минимальный рабочий пример:\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, Depends, HTTPException\n" +
+          "from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm\n\n" +
+          "USERS = {'admin@test.com': {'name': 'Admin', 'password': 'admin', 'role': 'admin'}}\n" +
+          "oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')\n\n" +
+          "def get_current_user(token: str = Depends(oauth2_scheme)):\n" +
+          "    user = USERS.get(token)  # упрощённая проверка (token = email)\n" +
+          "    if not user:\n" +
+          "        raise HTTPException(status_code=401, detail='Неверный токен')\n" +
+          "    return user\n\n" +
+          "app = FastAPI()\n\n" +
+          "@app.post('/auth/token')\n" +
+          "def login(form: OAuth2PasswordRequestForm = Depends()):\n" +
+          "    user = USERS.get(form.username)\n" +
+          "    if not user or user['password'] != form.password:\n" +
+          "        raise HTTPException(401, 'Неверные данные')\n" +
+          "    return {'access_token': form.username, 'token_type': 'bearer'}\n\n" +
+          "@app.get('/me')\n" +
+          "def me(user = Depends(get_current_user)): return user\n\n" +
+          "@app.get('/users')\n" +
+          "def users(user = Depends(get_current_user)):\n" +
+          "    if user['role'] != 'admin': raise HTTPException(403)\n" +
+          "    return list(USERS.values())\n" +
+          "```",
+      },
     ],
     cheatSheet: [
       "`oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')`",
@@ -4609,6 +5101,46 @@ const fa8: Round = {
           "BackgroundTask для критических операций — если сервер упадёт, задача потеряется. Для важного — Celery/RQ.",
         ],
         analogy: "Middleware — как охрана на входе и выходе из здания. Охрана при входе (до call_next): проверяет пропуск, логирует. Охрана при выходе (после call_next): проверяет что не вынесли лишнего, добавляет штамп (заголовок). BackgroundTasks — как курьер: клиент получил чек (response), курьер уже едет доставлять посылку (фоновая задача). Клиент не стоит и не ждёт курьера.",
+      },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Все ответы на задания раунда 8",
+        body:
+          "### Упражнение 1: «CORSMiddleware настройка»\n\n" +
+          "```python\n" +
+          "from fastapi.middleware.cors import CORSMiddleware  # {{0}} = cors, {{1}} = CORSMiddleware\n\n" +
+          "app.add_middleware(                                  # {{2}} = add\n" +
+          "    CORSMiddleware,\n" +
+          "    allow_origins=['http://localhost:3000',\n" +
+          "                   'http://localhost:5173'],         # {{3}} = 5173 (Vite!)\n" +
+          "    allow_credentials=True,                         # {{4}} = credentials\n" +
+          "    allow_methods=['*'],                            # {{5}} = methods\n" +
+          ")\n" +
+          "```\n\n" +
+          "**Порт 5173** — это дефолтный порт Vite/React в режиме разработки.\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «Кастомное Middleware»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, Request  # {{0}} = Request\n\n" +
+          "@app.middleware('http')               # {{1}} = middleware, {{2}} = http\n" +
+          "async def my_middleware(request: Request, call_next):\n" +
+          "    response = await call_next(request)  # {{3}} = await\n" +
+          "    response.headers['X-Time'] = '...'  # {{4}} = headers\n" +
+          "    return response                      # {{5}} = return\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Background Tasks»\n\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, BackgroundTasks  # {{0}} = BackgroundTasks\n\n" +
+          "@app.post('/send')\n" +
+          "def send(bg: BackgroundTasks):  # {{1}} = BackgroundTasks\n" +
+          "    bg.add_task(send_email, 'test@test.com')  # {{2}} = add_task\n" +
+          "    return {'queued': True}  # {{3}} = True\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Middleware и фоновые задачи\n\n" +
+          "**CORSMiddleware — разрешение кросс-доменных запросов.** CORS — браузерный механизм безопасности: браузер блокирует запрос с localhost:3000 к API на localhost:8000, потому что это разные origins. CORSMiddleware добавляет заголовок Access-Control-Allow-Origin к ответам. allow_origins=[] со звёздочкой разрешает всем (только для разработки!), в продакшене указывай конкретные домены. Также настраивай allow_methods и allow_headers. Регистрируется через app.add_middleware().\n\n" +
+          "**BackgroundTasks — задачи после отправки ответа.** Фоновая задача выполняется ПОСЛЕ того как HTTP-ответ уже отправлен клиенту — клиент не ждёт её завершения. Идеально для: отправки email после регистрации, записи в лог, обновления кэша, отправки уведомлений. Добавляешь параметр background_tasks: BackgroundTasks в сигнатуру маршрута, затем вызываешь background_tasks.add_task(fn, arg1, arg2). Для тяжёлых долгих операций используй Celery или ARQ — BackgroundTasks для коротких задач.",
       },
     ],
     cheatSheet: [
@@ -5225,6 +5757,41 @@ const fa9: Round = {
           "client.post('/path?param=val', json={...}) — query params в URL, body в json=.",
         ],
         analogy: "TestClient — как манекен-покупатель в магазине. Ходит по отделам (маршрутам), покупает (POST) и проверяет (GET), смотрит чеки (response.json()). dependency_overrides — как учебный манекен вместо реального человека: поведение то же, но без настоящих денег (реальной БД). После тренировки манекена убираем (clear()) чтобы реальные покупатели не взаимодействовали с манекеном.",
+      },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Все ответы на задания раунда 9",
+        body:
+          "### Упражнение 1: «TestClient базовые тесты»\n\n" +
+          "```python\n" +
+          "from fastapi.testclient import TestClient  # {{0}} = TestClient\n\n" +
+          "client = TestClient(app)  # {{1}} = TestClient\n\n" +
+          "def test_root():\n" +
+          "    response = client.get('/')         # {{2}} = get\n" +
+          "    assert response.status_code == 200  # {{3}} = status_code\n" +
+          "    assert response.json() == {...}     # {{4}} = json\n\n" +
+          "def test_create():\n" +
+          "    response = client.post('/items',    # {{5}} = post\n" +
+          "                          json={...})   # {{6}} = json\n" +
+          "    assert response.status_code == 201\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «dependency_overrides»\n\n" +
+          "```python\n" +
+          "# Переопределяем зависимость:\n" +
+          "app.dependency_overrides[get_db] = override_get_db  # {{0}} = dependency_overrides\n\n" +
+          "# Создаём тестовый client:\n" +
+          "client = TestClient(app)  # {{1}} = TestClient\n\n" +
+          "def override_auth():\n" +
+          "    return {'role': 'admin'}  # {{2}} = admin\n\n" +
+          "app.dependency_overrides[get_current_user] = override_auth  # {{3}} = get_current_user\n\n" +
+          "# Очищаем:\n" +
+          "app.dependency_overrides.clear()  # {{4}} = clear\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Тестирование FastAPI приложений\n\n" +
+          "**TestClient — тесты без реального сервера.** TestClient (из fastapi.testclient, основан на httpx) позволяет тестировать FastAPI-приложение напрямую, без запуска HTTP-сервера. Тест выполняется в одном процессе — быстрее, нет сетевых задержек, легко запускается в CI/CD. Синтаксис: client.get(path), client.post(path, json={...}). Ответ содержит .status_code, .json(), .headers.\n\n" +
+          "**dependency_overrides — подмена зависимостей в тестах.** В реальном коде маршруты зависят от get_db() (PostgreSQL) или get_current_user() (JWT). В тестах реальная БД и токены не нужны. app.dependency_overrides[original_dep] = mock_dep заставляет FastAPI использовать тестовую версию. Важно очищать после теста: app.dependency_overrides.clear(). Это делает тесты изолированными и независимыми от внешних сервисов.",
       },
     ],
     cheatSheet: [
@@ -5936,6 +6503,104 @@ const fa10: Round = {
           "pip freeze > requirements.txt — зафиксируй версии перед деплоем чтобы не сломать на сервере.",
         ],
         analogy: "async def — как официант который может обслуживать несколько столиков одновременно (пока ждёт заказ у одного — принимает у другого). def — как второй официант в отдельной комнате (threadpool): работает там сам по себе, не мешая первому. time.sleep() в async def — как заснуть прямо в зале: все гости (запросы) ждут пока официант проснётся. Lifespan — как открытие и закрытие ресторана: до yield = готовимся к открытию, после yield (shutdown) = убираем и закрываем.",
+      },
+      {
+        heading: "Примеры и пояснения",
+        tagline: "Все ответы на задания финального раунда",
+        body:
+          "### Упражнение 1: «Async маршруты»\n\n" +
+          "```python\n" +
+          "import asyncio   # {{0}} = asyncio\n\n" +
+          "async def slow_route():     # {{1}} = async\n" +
+          "    await asyncio.sleep(0.01)  # {{2}} = await\n\n" +
+          "@app.get('/parallel')\n" +
+          "async def parallel():\n" +
+          "    results = await asyncio.gather(...)  # {{2}} = await, {{3}} = gather\n" +
+          "    return {'tasks': len(results)}  # {{4}} = len\n\n" +
+          "@app.get('/sync')\n" +
+          "def sync_route():  # {{5}} = def (sync!)\n" +
+          "    ...\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 2: «Lifespan — управление ресурсами»\n\n" +
+          "```python\n" +
+          "from contextlib import asynccontextmanager  # {{0}} = asynccontextmanager\n\n" +
+          "@asynccontextmanager                        # {{1}} = asynccontextmanager\n" +
+          "async def lifespan(app: FastAPI):\n" +
+          "    cache.connect()                         # {{2}} = connect\n" +
+          "    yield                                   # {{3}} = yield\n" +
+          "    cache.disconnect()\n\n" +
+          "app = FastAPI(lifespan=lifespan)            # {{4}} = lifespan\n\n" +
+          "@app.get('/status')\n" +
+          "def status(): return {'ready': cache.ready}  # {{5}} = ready\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### Упражнение 3: «Production-готовое приложение»\n\n" +
+          "```python\n" +
+          "VERSION = '1.0.0'  # {{0}} = 1.0.0\n\n" +
+          "@asynccontextmanager\n" +
+          "async def lifespan(app):\n" +
+          "    ...\n" +
+          "    yield           # {{1}} = yield\n" +
+          "    ...\n\n" +
+          "app = FastAPI(\n" +
+          "    docs_url='/docs' if DEBUG else None,  # {{2}} = '/docs', {{3}} = None\n" +
+          "    lifespan=lifespan,\n" +
+          ")\n\n" +
+          "app.add_middleware(\n" +
+          "    CORSMiddleware,  # {{4}} = CORSMiddleware\n" +
+          "    ...\n" +
+          ")\n\n" +
+          "@app.get('/health')  # {{5}} = health\n" +
+          "def health(): ...\n" +
+          "```\n\n" +
+          "---\n\n" +
+          "### async/await и Lifespan в FastAPI\n\n" +
+          "**async def vs def — разные режимы выполнения.** def (sync): FastAPI запускает в пуле потоков (threadpool), чтобы не блокировать event loop — безопасно для любого блокирующего I/O. async def: выполняется в event loop — нельзя вызывать блокирующие операции (time.sleep, sync-запросы к БД), иначе заморозишь обработку всех запросов. Используй async def только с настоящими async-библиотеками (asyncpg, httpx, aiofiles). Если не уверен — пиши def.\n\n" +
+          "**Lifespan вместо устаревшего on_event.** on_event startup/shutdown устарели начиная с FastAPI 0.93. Современный способ — lifespan context manager: один блок кода, где до yield — инициализация (БД, кэш, ML-модель), после yield — очистка ресурсов. Startup и shutdown в одном месте — удобнее читать и тестировать. Подключение: app = FastAPI(lifespan=lifespan).\n\n" +
+          "---\n\n" +
+          "### Финальный проект — план\n\n" +
+          "Собери всё изученное в одном файле:\n" +
+          "```python\n" +
+          "from fastapi import FastAPI, APIRouter, Depends, HTTPException, BackgroundTasks\n" +
+          "from fastapi.middleware.cors import CORSMiddleware\n" +
+          "from contextlib import asynccontextmanager\n" +
+          "from pydantic import BaseModel\n" +
+          "from typing import Optional\n\n" +
+          "# 1. Lifespan\n" +
+          "@asynccontextmanager\n" +
+          "async def lifespan(app):\n" +
+          "    print('API started')\n" +
+          "    yield\n" +
+          "    print('API stopped')\n\n" +
+          "# 2. App с CORS\n" +
+          "app = FastAPI(title='Final API', lifespan=lifespan)\n" +
+          "app.add_middleware(CORSMiddleware, allow_origins=['*'],\n" +
+          "                   allow_methods=['*'], allow_headers=['*'])\n\n" +
+          "# 3. Middleware\n" +
+          "@app.middleware('http')\n" +
+          "async def log_mw(request, call_next):\n" +
+          "    r = await call_next(request)\n" +
+          "    return r\n\n" +
+          "# 4. Models\n" +
+          "class Item(BaseModel): name: str; price: float\n" +
+          "class ItemResponse(Item): id: int\n\n" +
+          "# 5. Router\n" +
+          "router = APIRouter(prefix='/items', tags=['Items'])\n" +
+          "items_db: dict[int, dict] = {}; nid = 1\n\n" +
+          "@router.get('/', response_model=list[ItemResponse])\n" +
+          "def list(): return list(items_db.values())\n\n" +
+          "@router.post('/', response_model=ItemResponse, status_code=201)\n" +
+          "def create(item: Item, bg: BackgroundTasks):\n" +
+          "    global nid\n" +
+          "    bg.add_task(print, f'Created {item.name}')\n" +
+          "    r = {'id': nid, **item.model_dump()}; items_db[nid]=r; nid+=1\n" +
+          "    return r\n\n" +
+          "# 6. Include router\n" +
+          "app.include_router(router)\n\n" +
+          "@app.get('/health')\n" +
+          "def health(): return {'status': 'ok'}\n" +
+          "```",
       },
     ],
     cheatSheet: [
