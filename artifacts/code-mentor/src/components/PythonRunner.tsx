@@ -123,8 +123,7 @@ async function ensureFlask(pyodide: PyodideInterface): Promise<void> {
     if (!window._flaskCached) {
       // Use locally-bundled wheel files so Flask installs 100% offline.
       // The wheels are served from public/wheels/ and cached by the service worker.
-      const origin = window.location.origin;
-      const base = origin + "/wheels/";
+      const base = window.location.origin + import.meta.env.BASE_URL.replace(/\/$/, "") + "/wheels/";
       const wheelList = [
         "jinja2-3.1.4-py3-none-any.whl",
         "click-8.1.7-py3-none-any.whl",

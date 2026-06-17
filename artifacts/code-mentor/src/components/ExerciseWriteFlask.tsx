@@ -76,7 +76,7 @@ async function ensureFlask(py: PyodideInterface): Promise<void> {
   window._flaskEnsurePromise = (async () => {
     await py.loadPackage(["micropip", "markupsafe"]);
     if (!window._flaskCached) {
-      const base = window.location.origin + "/wheels/";
+      const base = window.location.origin + import.meta.env.BASE_URL.replace(/\/$/, "") + "/wheels/";
       const wheels = [
         "jinja2-3.1.4-py3-none-any.whl",
         "click-8.1.7-py3-none-any.whl",

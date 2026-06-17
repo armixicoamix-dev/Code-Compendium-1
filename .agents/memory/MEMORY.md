@@ -1,0 +1,2 @@
+- [Code Mentor setup](code-mentor-setup.md) — Pyodide offline runner, wheel URLs via BASE_URL, vite.config PORT/BASE_PATH optional.
+- [Render deployment](render-deploy.md) — render.yaml at root, static site, pnpm workspace filter, SPA rewrite.

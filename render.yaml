@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: code-mentor
+    env: static
+    buildCommand: npm install -g pnpm && pnpm install --frozen-lockfile && BASE_PATH=/ pnpm --filter @workspace/code-mentor run build
+    staticPublishPath: artifacts/code-mentor/dist/public
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
