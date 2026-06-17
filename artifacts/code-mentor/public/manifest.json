@@ -1,0 +1,41 @@
+{
+  "name": "Code Mentor — Python & Web",
+  "short_name": "Code Mentor",
+  "description": "Тренажёр по Python, Flask, HTML, CSS и JavaScript — работает офлайн",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1117",
+  "theme_color": "#0f1117",
+  "orientation": "any",
+  "lang": "ru",
+  "categories": ["education", "developer", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Python Playground",
+      "short_name": "Python",
+      "url": "/?mode=playground",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "HTML/CSS/JS Редактор",
+      "short_name": "Web Editor",
+      "url": "/?mode=html",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

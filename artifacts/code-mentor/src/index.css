@@ -1,0 +1,1372 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
+
+  /* Deep, rich dark palette tuned for code-heavy UI */
+  --background: 230 35% 5%;
+  --foreground: 213 31% 96%;
+  --border: 230 25% 14%;
+  --card: 230 30% 8%;
+  --card-foreground: 213 31% 96%;
+  --card-border: 230 25% 14%;
+  --sidebar: 230 32% 7%;
+  --sidebar-foreground: 213 31% 96%;
+  --sidebar-border: 230 25% 14%;
+  --sidebar-primary: 217 91% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 230 25% 14%;
+  --sidebar-accent-foreground: 213 31% 96%;
+  --sidebar-ring: 217 91% 65%;
+  --popover: 230 30% 9%;
+  --popover-foreground: 213 31% 96%;
+  --popover-border: 230 25% 16%;
+  --primary: 217 91% 65%;
+  --primary-foreground: 230 35% 5%;
+  --secondary: 230 25% 14%;
+  --secondary-foreground: 213 31% 96%;
+  --muted: 230 25% 12%;
+  --muted-foreground: 215 20% 68%;
+  --accent: 280 90% 70%;
+  --accent-foreground: 230 35% 5%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 230 25% 14%;
+  --ring: 217 91% 65%;
+  --chart-1: 217 91% 65%;
+  --chart-2: 280 90% 70%;
+  --chart-3: 160 84% 55%;
+  --chart-4: 38 95% 65%;
+  --chart-5: 340 85% 65%;
+
+  --app-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --app-font-serif: Georgia, serif;
+  --app-font-mono: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  --radius: .75rem;
+
+  --shadow-2xs: 0 1px 2px 0 rgba(0,0,0,.30);
+  --shadow-xs: 0 1px 2px 0 rgba(0,0,0,.30);
+  --shadow-sm: 0 1px 3px 0 rgba(0,0,0,.40), 0 1px 2px -1px rgba(0,0,0,.40);
+  --shadow: 0 2px 4px 0 rgba(0,0,0,.40), 0 1px 2px -1px rgba(0,0,0,.40);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.50);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.50);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.55);
+  --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,.65);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+/* Dark class also forces same palette for shadcn dark variants. */
+.dark {
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
+
+  --background: 230 35% 5%;
+  --foreground: 213 31% 96%;
+  --border: 230 25% 14%;
+  --card: 230 30% 8%;
+  --card-foreground: 213 31% 96%;
+  --card-border: 230 25% 14%;
+  --sidebar: 230 32% 7%;
+  --sidebar-foreground: 213 31% 96%;
+  --sidebar-border: 230 25% 14%;
+  --sidebar-primary: 217 91% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 230 25% 14%;
+  --sidebar-accent-foreground: 213 31% 96%;
+  --sidebar-ring: 217 91% 65%;
+  --popover: 230 30% 9%;
+  --popover-foreground: 213 31% 96%;
+  --popover-border: 230 25% 16%;
+  --primary: 217 91% 65%;
+  --primary-foreground: 230 35% 5%;
+  --secondary: 230 25% 14%;
+  --secondary-foreground: 213 31% 96%;
+  --muted: 230 25% 12%;
+  --muted-foreground: 215 20% 68%;
+  --accent: 280 90% 70%;
+  --accent-foreground: 230 35% 5%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 230 25% 14%;
+  --ring: 217 91% 65%;
+  --chart-1: 217 91% 65%;
+  --chart-2: 280 90% 70%;
+  --chart-3: 160 84% 55%;
+  --chart-4: 38 95% 65%;
+  --chart-5: 340 85% 65%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  html, body {
+    @apply font-sans antialiased bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -15%, hsl(217 91% 65% / 0.20), transparent),
+      radial-gradient(ellipse 70% 50% at 88% 110%, hsl(280 90% 70% / 0.14), transparent),
+      radial-gradient(ellipse 70% 50% at 12% 110%, hsl(217 91% 65% / 0.10), transparent),
+      radial-gradient(ellipse 42% 32% at 50% 52%, hsl(160 84% 55% / 0.05), transparent),
+      hsl(var(--background));
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scrollbar styling — desktop only */
+  @media (min-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: hsl(230 30% 7%);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: hsl(230 25% 20%);
+      border-radius: 6px;
+      border: 2px solid hsl(230 30% 7%);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: hsl(230 25% 28%);
+    }
+  }
+
+  /* Selection */
+  ::selection {
+    background: hsl(217 91% 65% / 0.35);
+    color: hsl(213 31% 98%);
+  }
+}
+
+@layer utilities {
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  .no-default-hover-elevate {}
+  .no-default-active-elevate {}
+
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: 999;
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+
+  .code-font {
+    font-family: var(--app-font-mono);
+    font-feature-settings: "calt" 1, "liga" 1;
+  }
+
+  /* ── Radial glow orbs ── */
+  .glow-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ── Gradient text ── */
+  .text-gradient {
+    background: linear-gradient(120deg, hsl(189 80% 68%), hsl(217 91% 70%), hsl(280 90% 76%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, hsl(38 95% 68%), hsl(28 90% 72%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ── Surface cards ── */
+  .surface-card {
+    background:
+      linear-gradient(180deg, hsl(230 30% 10% / 0.9), hsl(230 30% 7% / 0.9));
+    border: 1px solid hsl(230 25% 16%);
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.04) inset,
+      0 30px 60px -30px hsl(0 0% 0% / 0.6);
+    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+    will-change: transform;
+  }
+
+  .surface-card-hover:hover {
+    border-color: hsl(217 91% 65% / 0.45);
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.07) inset,
+      0 30px 60px -30px hsl(0 0% 0% / 0.75),
+      0 0 0 1px hsl(217 91% 65% / 0.14),
+      0 8px 36px -8px hsl(217 91% 65% / 0.32);
+    transform: translateY(-2px);
+  }
+
+  .surface-card-hover:active {
+    transform: translateY(0);
+  }
+
+  /* ── Gradient border card ── */
+  .card-gradient-border {
+    position: relative;
+    border-radius: 1rem;
+    background: linear-gradient(180deg, hsl(230 30% 10% / 0.95), hsl(230 30% 7% / 0.95));
+  }
+  .card-gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(217 91% 65% / 0.5), hsl(280 90% 70% / 0.3), transparent 60%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ── Page container (responsive padding) ── */
+  .page-container {
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .page-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .page-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* ── Touch-friendly min-height ── */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* ── Animations ── */
+  @keyframes float-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slide-right {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-3px); }
+    75%      { transform: translateX(3px); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(217 91% 65% / 0); }
+    50%       { box-shadow: 0 0 24px 4px hsl(217 91% 65% / 0.2); }
+  }
+
+  .animate-float-up  { animation: float-up  0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-fade-in   { animation: fade-in   0.4s ease both; }
+  .animate-scale-in  { animation: scale-in  0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-slide-right { animation: slide-right 0.4s ease both; }
+
+  /* staggered delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+
+  /* ── Section divider label ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+  .section-label::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    background: linear-gradient(to right, hsl(217 91% 65%), hsl(280 90% 70%));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── Badge pill ── */
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+
+  /* ── New / Bonus / Featured inline badges ── */
+  .badge-new {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .badge-new--orange {
+    background: hsl(25 80% 55% / 0.14);
+    color: hsl(25 80% 74%);
+    border: 1px solid hsl(25 80% 55% / 0.30);
+  }
+  .badge-new--green {
+    background: hsl(160 84% 45% / 0.14);
+    color: hsl(160 84% 68%);
+    border: 1px solid hsl(160 84% 45% / 0.28);
+  }
+  .badge-new--primary {
+    background: hsl(217 91% 65% / 0.14);
+    color: hsl(217 91% 75%);
+    border: 1px solid hsl(217 91% 65% / 0.28);
+  }
+
+  /* ── Section gradient divider ── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(217 91% 65% / 0.22),
+      hsl(280 90% 70% / 0.18),
+      transparent
+    );
+    border: none;
+    margin: 0;
+  }
+}
+
+/* ============================================================
+   Code editor surface — JetBrains-inspired dark theme
+   ============================================================ */
+.code-editor {
+  position: relative;
+  background:
+    linear-gradient(180deg, hsl(230 35% 6%), hsl(230 38% 4%));
+  border: 1px solid hsl(230 25% 16%);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 hsl(0 0% 100% / 0.05) inset,
+    0 24px 48px -24px hsl(0 0% 0% / 0.7);
+}
+
+.code-editor__chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: hsl(230 35% 7%);
+  border-bottom: 1px solid hsl(230 25% 14%);
+  font-family: var(--app-font-mono);
+  font-size: 11px;
+  color: hsl(215 20% 60%);
+}
+
+.code-editor__chrome .dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+}
+.code-editor__chrome .dot.r { background: hsl(0 70% 60%); }
+.code-editor__chrome .dot.y { background: hsl(38 95% 60%); }
+.code-editor__chrome .dot.g { background: hsl(140 60% 50%); }
+
+.code-editor__filename {
+  margin-left: 8px;
+  letter-spacing: 0.02em;
+}
+
+.code-editor__lang {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: hsl(217 91% 65% / 0.15);
+  color: hsl(217 91% 78%);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.code-editor__body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  tab-size: 4;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.code-editor__gutter {
+  user-select: none;
+  text-align: right;
+  padding: 14px 12px 14px 16px;
+  color: hsl(230 15% 35%);
+  background: hsl(230 38% 5%);
+  border-right: 1px solid hsl(230 25% 12%);
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+
+.code-editor__code {
+  padding: 14px 18px;
+  white-space: pre;
+  color: hsl(213 31% 92%);
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Token colors — One Dark / JetBrains Darcula hybrid */
+.code-editor__code .kw      { color: hsl(286 60% 72%); font-weight: 600; }
+.code-editor__code .builtin { color: hsl(189 80% 70%); }
+.code-editor__code .str     { color: hsl(95 50% 70%); }
+.code-editor__code .num     { color: hsl(28 90% 70%); }
+.code-editor__code .com     { color: hsl(220 12% 45%); font-style: italic; }
+.code-editor__code .fn      { color: hsl(207 95% 75%); }
+.code-editor__code .cls     { color: hsl(45 95% 72%); }
+.code-editor__code .deco    { color: hsl(45 80% 62%); font-style: italic; }
+.code-editor__code .op      { color: hsl(213 20% 70%); }
+.code-editor__code .selfkw  { color: hsl(0 65% 70%); font-style: italic; }
+
+/* Legacy code-block class (used by PyCode for read-only snippets) */
+.code-block {
+  background:
+    linear-gradient(180deg, hsl(230 35% 6%), hsl(230 38% 4%));
+  color: hsl(213 31% 92%);
+  border: 1px solid hsl(230 25% 16%);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 4;
+  box-shadow: 0 1px 0 hsl(0 0% 100% / 0.04) inset;
+  -webkit-overflow-scrolling: touch;
+}
+
+.code-block .kw      { color: hsl(286 60% 72%); font-weight: 600; }
+.code-block .builtin { color: hsl(189 80% 70%); }
+.code-block .str     { color: hsl(95 50% 70%); }
+.code-block .num     { color: hsl(28 90% 70%); }
+.code-block .com     { color: hsl(220 12% 45%); font-style: italic; }
+.code-block .fn      { color: hsl(207 95% 75%); }
+.code-block .cls     { color: hsl(45 95% 72%); }
+.code-block .deco    { color: hsl(45 80% 62%); font-style: italic; }
+.code-block .op      { color: hsl(213 20% 70%); }
+.code-block .selfkw  { color: hsl(0 65% 70%); font-style: italic; }
+
+/* ============================================================
+   Blank inputs — inline within code, JetBrains-style
+   ============================================================ */
+.blank-input {
+  display: inline-block;
+  background: hsl(217 91% 65% / 0.10);
+  border: 1px dashed hsl(217 91% 65% / 0.55);
+  color: hsl(213 31% 98%);
+  font-family: var(--app-font-mono);
+  font-size: inherit;
+  font-weight: 500;
+  border-radius: 5px;
+  padding: 0 6px;
+  margin: 0 1px;
+  min-width: 60px;
+  height: 1.6em;
+  line-height: 1.5em;
+  vertical-align: baseline;
+  outline: none;
+  transition: all 140ms ease;
+  box-shadow: 0 0 0 0 hsl(217 91% 65% / 0);
+  -webkit-appearance: none;
+  touch-action: manipulation;
+}
+
+.blank-input::placeholder {
+  color: hsl(217 91% 65% / 0.45);
+  font-weight: 400;
+}
+
+.blank-input:hover {
+  border-color: hsl(217 91% 70% / 0.85);
+  background: hsl(217 91% 65% / 0.16);
+}
+
+.blank-input:focus {
+  border-style: solid;
+  border-color: hsl(217 91% 70%);
+  background: hsl(217 91% 65% / 0.18);
+  box-shadow: 0 0 0 3px hsl(217 91% 65% / 0.25);
+}
+
+.blank-input.correct {
+  background: hsl(160 84% 50% / 0.18);
+  border-color: hsl(160 84% 55%);
+  border-style: solid;
+  color: hsl(160 84% 85%);
+  box-shadow: 0 0 0 1px hsl(160 84% 50% / 0.35);
+}
+
+.blank-input.incorrect {
+  background: hsl(0 84% 60% / 0.18);
+  border-color: hsl(0 84% 65%);
+  border-style: solid;
+  color: hsl(0 84% 88%);
+  box-shadow: 0 0 0 1px hsl(0 84% 60% / 0.35);
+  animation: shake 250ms ease;
+}
+
+/* ============================================================
+   Fill-Lines exercise — multi-line code block input
+   ============================================================ */
+.fill-lines__body {
+  background: hsl(230 38% 4%);
+  padding: 14px 0;
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fill-lines__code {
+  margin: 0;
+  padding: 0 18px;
+  white-space: pre;
+  color: hsl(213 31% 92%);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.fill-lines__code .kw      { color: hsl(286 60% 72%); font-weight: 600; }
+.fill-lines__code .builtin { color: hsl(189 80% 70%); }
+.fill-lines__code .str     { color: hsl(95 50% 70%); }
+.fill-lines__code .num     { color: hsl(28 90% 70%); }
+.fill-lines__code .com     { color: hsl(220 12% 45%); font-style: italic; }
+.fill-lines__code .fn      { color: hsl(207 95% 75%); }
+.fill-lines__code .cls     { color: hsl(45 95% 72%); }
+.fill-lines__code .deco    { color: hsl(45 80% 62%); font-style: italic; }
+.fill-lines__code .op      { color: hsl(213 20% 70%); }
+.fill-lines__code .selfkw  { color: hsl(0 65% 70%); font-style: italic; }
+
+.fill-lines__blank {
+  margin: 6px 14px;
+  border: 1px dashed hsl(286 60% 72% / 0.55);
+  border-radius: 8px;
+  background: hsl(286 60% 30% / 0.10);
+  padding: 8px 10px;
+  transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.fill-lines__blank--correct {
+  border-color: hsl(160 84% 55%);
+  background: hsl(160 84% 25% / 0.14);
+  box-shadow: 0 0 0 1px hsl(160 84% 50% / 0.35);
+  border-style: solid;
+}
+
+.fill-lines__blank--partial {
+  border-color: hsl(38 95% 60%);
+  background: hsl(38 95% 30% / 0.12);
+  border-style: solid;
+}
+
+.fill-lines__blank--incorrect {
+  border-color: hsl(0 84% 65%);
+  background: hsl(0 84% 25% / 0.12);
+  border-style: solid;
+  box-shadow: 0 0 0 1px hsl(0 84% 60% / 0.30);
+}
+
+.fill-lines__blank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: hsl(286 60% 80%);
+}
+
+.fill-lines__blank-tag {
+  font-family: var(--app-font-mono);
+}
+
+.fill-lines__blank-score {
+  font-family: var(--app-font-mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: hsl(286 60% 30% / 0.30);
+  color: hsl(286 60% 88%);
+  border: 1px solid hsl(286 60% 60% / 0.30);
+}
+.fill-lines__blank-score--correct {
+  background: hsl(160 84% 30% / 0.35);
+  color: hsl(160 84% 90%);
+  border-color: hsl(160 84% 50% / 0.55);
+}
+.fill-lines__blank-score--partial {
+  background: hsl(38 95% 30% / 0.35);
+  color: hsl(38 95% 90%);
+  border-color: hsl(38 95% 55% / 0.55);
+}
+.fill-lines__blank-score--incorrect {
+  background: hsl(0 84% 30% / 0.30);
+  color: hsl(0 84% 92%);
+  border-color: hsl(0 84% 60% / 0.50);
+}
+
+.fill-lines__textarea {
+  width: 100%;
+  background: hsl(230 38% 6%);
+  color: hsl(213 31% 95%);
+  border: 1px solid hsl(230 25% 16%);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--app-font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  outline: none;
+  resize: vertical;
+  min-height: 2.4em;
+  tab-size: 4;
+  white-space: pre;
+  -webkit-appearance: none;
+  touch-action: manipulation;
+}
+
+.fill-lines__textarea::placeholder {
+  color: hsl(286 30% 60% / 0.55);
+  font-style: italic;
+}
+
+.fill-lines__textarea:focus {
+  border-color: hsl(286 60% 72%);
+  box-shadow: 0 0 0 3px hsl(286 60% 50% / 0.22);
+}
+
+.fill-lines__forbidden {
+  margin-top: 6px;
+  font-size: 11px;
+  color: hsl(0 84% 80%);
+}
+
+.fill-lines__refbar {
+  margin-top: 8px;
+  border-top: 1px dashed hsl(230 25% 18%);
+  padding-top: 6px;
+}
+
+.fill-lines__refbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: hsl(207 95% 75%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 0;
+}
+.fill-lines__refbtn:hover {
+  color: hsl(207 95% 85%);
+  text-decoration: underline;
+}
+
+.fill-lines__reference {
+  margin-top: 6px;
+  background: hsl(230 38% 5%);
+  border: 1px solid hsl(230 25% 14%);
+  border-left: 3px solid hsl(207 95% 60%);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: hsl(213 31% 90%);
+  white-space: pre;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fill-lines__reference .kw      { color: hsl(286 60% 72%); font-weight: 600; }
+.fill-lines__reference .builtin { color: hsl(189 80% 70%); }
+.fill-lines__reference .str     { color: hsl(95 50% 70%); }
+.fill-lines__reference .num     { color: hsl(28 90% 70%); }
+.fill-lines__reference .com     { color: hsl(220 12% 45%); font-style: italic; }
+.fill-lines__reference .fn      { color: hsl(207 95% 75%); }
+.fill-lines__reference .cls     { color: hsl(45 95% 72%); }
+.fill-lines__reference .deco    { color: hsl(45 80% 62%); font-style: italic; }
+.fill-lines__reference .op      { color: hsl(213 20% 70%); }
+.fill-lines__reference .selfkw  { color: hsl(0 65% 70%); font-style: italic; }
+
+/* ============================================================
+   Smart Code Editor — syntax-highlighted editable textarea
+   ============================================================ */
+.smart-editor {
+  position: relative;
+  background: linear-gradient(180deg, hsl(230 35% 6%), hsl(230 38% 4%));
+  border: 1px solid hsl(230 25% 16%);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 hsl(0 0% 100% / 0.05) inset,
+    0 24px 48px -24px hsl(0 0% 0% / 0.7);
+}
+
+.smart-editor__chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: hsl(230 35% 7%);
+  border-bottom: 1px solid hsl(230 25% 14%);
+  font-family: var(--app-font-mono);
+  font-size: 11px;
+  color: hsl(215 20% 60%);
+}
+
+.smart-editor__body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  tab-size: 4;
+}
+
+.smart-editor__code-area {
+  position: relative;
+  min-height: 280px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.smart-editor__highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 14px 18px;
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: hsl(213 31% 92%);
+  white-space: pre-wrap;
+  word-break: break-word;
+  pointer-events: none;
+  overflow: hidden;
+  tab-size: 4;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.smart-editor__textarea {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 280px;
+  margin: 0;
+  padding: 14px 18px;
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: transparent;
+  caret-color: hsl(213 31% 96%);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  tab-size: 4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: hidden;
+  -webkit-appearance: none;
+  touch-action: manipulation;
+}
+
+.smart-editor__textarea::placeholder {
+  color: hsl(230 15% 35%);
+}
+
+.smart-editor__textarea::selection {
+  background: hsl(217 91% 65% / 0.30);
+  color: transparent;
+}
+
+/* Token colors inside the highlight pre */
+.smart-editor__highlight .kw      { color: hsl(286 60% 72%); font-weight: 600; }
+.smart-editor__highlight .builtin { color: hsl(189 80% 70%); }
+.smart-editor__highlight .str     { color: hsl(95 50% 70%); }
+.smart-editor__highlight .num     { color: hsl(28 90% 70%); }
+.smart-editor__highlight .com     { color: hsl(220 12% 45%); font-style: italic; }
+.smart-editor__highlight .fn      { color: hsl(207 95% 75%); }
+.smart-editor__highlight .cls     { color: hsl(45 95% 72%); }
+.smart-editor__highlight .deco    { color: hsl(45 80% 62%); font-style: italic; }
+.smart-editor__highlight .selfkw  { color: hsl(0 65% 70%); font-style: italic; }
+
+/* ============================================================
+   Python Runner — terminal output panel
+   ============================================================ */
+.pyrunner-output {
+  font-family: var(--app-font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  border-radius: 8px;
+  padding: 10px 14px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  max-height: 320px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pyrunner-output--success {
+  background: hsl(230 38% 5%);
+  border: 1px solid hsl(160 60% 30% / 0.5);
+  color: hsl(160 50% 88%);
+}
+
+.pyrunner-output--error {
+  background: hsl(0 40% 6%);
+  border: 1px solid hsl(0 60% 40% / 0.5);
+  color: hsl(0 70% 80%);
+}
+
+/* ============================================================
+   Lesson section card — extra polish
+   ============================================================ */
+.lesson-section-card {
+  background: linear-gradient(180deg, hsl(230 30% 10% / 0.9), hsl(230 30% 7% / 0.9));
+  border: 1px solid hsl(230 25% 17%);
+  border-radius: 1.125rem;
+  box-shadow: 0 1px 0 hsl(0 0% 100% / 0.04) inset;
+  transition: border-color 200ms ease;
+}
+.lesson-section-card:hover {
+  border-color: hsl(217 91% 65% / 0.25);
+}
+
+/* ============================================================
+   Mobile responsive overrides (≤ 640px)
+   ============================================================ */
+@media (max-width: 640px) {
+  /* Root font scale */
+  html {
+    font-size: 15px;
+  }
+
+  /* Prevent background-attachment: fixed lag on iOS */
+  body {
+    background-attachment: scroll;
+  }
+
+  /* Ensure nothing overflows horizontally */
+  * {
+    max-width: 100%;
+  }
+  pre, code, .code-block, .code-editor, .smart-editor {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Surface cards — no lift animation on touch (feels laggy) */
+  .surface-card-hover:hover {
+    transform: none;
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.06) inset,
+      0 30px 60px -30px hsl(0 0% 0% / 0.7),
+      0 0 0 1px hsl(217 91% 65% / 0.12);
+  }
+
+  /* Glow orbs — reduce on mobile for performance */
+  .glow-orb {
+    opacity: 0.25;
+    filter: blur(50px);
+  }
+
+  /* Code editor — smaller font, always scrollable */
+  .code-editor {
+    border-radius: 0.625rem;
+  }
+
+  .code-editor__body {
+    font-size: 11.5px;
+    line-height: 1.65;
+  }
+
+  .code-editor__chrome {
+    padding: 8px 12px;
+    font-size: 10px;
+    gap: 6px;
+  }
+
+  .code-editor__chrome .dot {
+    width: 9px;
+    height: 9px;
+  }
+
+  .code-editor__code {
+    padding: 10px 12px;
+  }
+
+  .code-editor__gutter {
+    padding: 10px 8px 10px 10px;
+    font-size: 10px;
+  }
+
+  .code-block {
+    font-size: 11.5px;
+    padding: 0.75rem 0.9rem;
+    overflow-x: auto;
+    border-radius: 0.625rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Blank inputs — bigger tap target, easier to tap on phones */
+  .blank-input {
+    min-width: 56px;
+    min-height: 36px;
+    height: auto;
+    line-height: 2em;
+    font-size: 13px;
+    padding: 0 8px;
+    border-radius: 6px;
+  }
+
+  /* Fill-lines exercises */
+  .fill-lines__body {
+    font-size: 11.5px;
+  }
+
+  .fill-lines__blank {
+    margin: 6px 10px;
+    padding: 10px 12px;
+  }
+
+  .fill-lines__textarea {
+    font-size: 13px;
+    min-height: 3.5em;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+
+  /* Smart code editor */
+  .smart-editor {
+    border-radius: 0.625rem;
+  }
+
+  .smart-editor__body {
+    font-size: 12px;
+  }
+
+  .smart-editor__highlight,
+  .smart-editor__textarea {
+    font-size: 12px;
+    padding: 10px 12px;
+    min-height: 200px;
+  }
+
+  .smart-editor__code-area {
+    min-height: 200px;
+  }
+
+  /* Python runner output */
+  .pyrunner-output {
+    font-size: 11px;
+    max-height: 240px;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+
+  /* Lesson cards */
+  .lesson-section-card {
+    border-radius: 0.875rem;
+  }
+
+  /* Touch targets — very important on mobile */
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Button size improvements */
+  button, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ============================================================
+   Extra small phones (≤ 480px) — iPhone SE, older Androids
+   ============================================================ */
+@media (max-width: 480px) {
+  html {
+    font-size: 14.5px;
+  }
+
+  /* Full-width buttons on tiny screens */
+  .btn-full-xs {
+    width: 100%;
+  }
+
+  .code-editor__body {
+    font-size: 11px;
+  }
+
+  .code-block {
+    font-size: 11px;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .blank-input {
+    font-size: 12px;
+    min-width: 50px;
+  }
+
+  .fill-lines__textarea {
+    font-size: 12px;
+  }
+
+  .smart-editor__highlight,
+  .smart-editor__textarea {
+    font-size: 11.5px;
+    padding: 8px 10px;
+  }
+
+  .pyrunner-output {
+    font-size: 10.5px;
+    padding: 6px 10px;
+  }
+}
+
+/* ============================================================
+   iOS safe area support (notch / Dynamic Island)
+   ============================================================ */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  @media (max-width: 640px) {
+    body {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+}
+
+/* ============================================================
+   Tablet breakpoint (641–1024px)
+   ============================================================ */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .code-editor__body {
+    font-size: 12.5px;
+  }
+
+  .code-block {
+    font-size: 12.5px;
+  }
+
+  .smart-editor__body {
+    font-size: 12.5px;
+  }
+
+  .smart-editor__highlight,
+  .smart-editor__textarea {
+    font-size: 12.5px;
+  }
+}
+
+/* ============================================================
+   Flashcard flip animation (state-based, not CSS 3D)
+   ============================================================ */
+@keyframes card-flip-in {
+  0%   { opacity: 0; transform: perspective(700px) rotateY(-70deg) scale(0.97); }
+  100% { opacity: 1; transform: perspective(700px) rotateY(0deg)   scale(1);    }
+}
+.animate-card-flip-in {
+  animation: card-flip-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Extra-small (phone) helper — used by flashcard nav buttons */
+@media (min-width: 400px) {
+  .xs\:inline { display: inline; }
+}
+
+/* ============================================================
+   Featured HTML/CSS/JS course card — cool blue-teal accent
+   ============================================================ */
+.card-web-featured {
+  background: linear-gradient(160deg, hsl(213 55% 8% / 0.97), hsl(230 30% 7% / 0.97));
+  border: 1px solid hsl(213 80% 45% / 0.35);
+  box-shadow:
+    0 1px 0 hsl(0 0% 100% / 0.04) inset,
+    0 0 0 1px hsl(213 80% 45% / 0.06),
+    0 8px 32px -8px hsl(213 80% 45% / 0.22);
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  will-change: transform;
+}
+.card-web-featured:hover {
+  border-color: hsl(213 80% 58% / 0.55);
+  box-shadow:
+    0 1px 0 hsl(0 0% 100% / 0.07) inset,
+    0 0 0 1px hsl(213 80% 58% / 0.13),
+    0 12px 42px -12px hsl(213 80% 58% / 0.35),
+    0 -1px 0 hsl(213 80% 68% / 0.10);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   Featured Flask course card — warm orange-amber accent
+   ============================================================ */
+.card-flask-featured {
+  background: linear-gradient(160deg, hsl(25 65% 8% / 0.97), hsl(230 30% 7% / 0.97));
+  border: 1px solid hsl(25 80% 45% / 0.38);
+  box-shadow:
+    0 1px 0 hsl(0 0% 100% / 0.04) inset,
+    0 0 0 1px hsl(25 80% 45% / 0.06),
+    0 8px 32px -8px hsl(25 80% 45% / 0.25);
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  will-change: transform;
+}
+.card-flask-featured:hover {
+  border-color: hsl(25 80% 55% / 0.55);
+  box-shadow:
+    0 1px 0 hsl(0 0% 100% / 0.07) inset,
+    0 0 0 1px hsl(25 80% 55% / 0.12),
+    0 12px 42px -12px hsl(25 80% 55% / 0.38),
+    0 -1px 0 hsl(25 80% 65% / 0.12);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   Hero stat numbers — large gradient numerals on welcome page
+   ============================================================ */
+.stat-hero-num {
+  font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+  font-weight: 900;
+  font-family: var(--app-font-mono);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, hsl(213 31% 98%), hsl(215 20% 78%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   Print styles for the methodology
+   ============================================================ */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print, button {
+    display: none !important;
+  }
+  .surface-card, .code-block {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ddd !important;
+  }
+}
