@@ -108,34 +108,58 @@ INSERT INTO orders (user_id, product_id, quantity, order_date) VALUES
 const SQL_RUNNER = `
 import sqlite3, json as _json, time as _time
 
+def _split_sql(sql):
+    """Split SQL by semicolons, skipping those inside string literals."""
+    stmts, cur, in_str, sc = [], [], False, None
+    for ch in sql:
+        if in_str:
+            cur.append(ch)
+            if ch == sc:
+                in_str = False
+        elif ch in ("'", '"', '\`'):
+            in_str, sc = True, ch
+            cur.append(ch)
+        elif ch == ';':
+            s = ''.join(cur).strip()
+            if s:
+                stmts.append(s)
+            cur = []
+        else:
+            cur.append(ch)
+    s = ''.join(cur).strip()
+    if s:
+        stmts.append(s)
+    return stmts or [sql.strip()]
+
 def run_sql(db_json, sql):
     db_bytes = bytes(_json.loads(db_json))
     t0 = _time.time()
-    
-    # Load DB from bytes
     conn = sqlite3.connect(':memory:')
     if db_bytes:
         tmp = sqlite3.connect(':memory:')
         tmp.deserialize(db_bytes)
         tmp.backup(conn)
         tmp.close()
-    
     cursor = conn.cursor()
     try:
-        cursor.execute(sql)
-        conn.commit()
-        rows = cursor.fetchall()
-        cols = [d[0] for d in cursor.description] if cursor.description else []
+        statements = _split_sql(sql)
+        cols, rows, rowcount = [], [], 0
+        for stmt in statements:
+            cursor.execute(stmt)
+            conn.commit()
+            if cursor.description:
+                rows = cursor.fetchall()
+                cols = [d[0] for d in cursor.description]
+                rowcount = len(rows)
+            else:
+                rowcount = cursor.rowcount if cursor.rowcount >= 0 else 0
         elapsed = round((_time.time() - t0) * 1000, 1)
-        
-        # Serialize updated DB
         new_db = list(conn.serialize())
-        
         return _json.dumps({
             'ok': True,
             'columns': cols,
             'rows': [list(r) for r in rows],
-            'rowcount': cursor.rowcount,
+            'rowcount': rowcount,
             'elapsed': elapsed,
             'db': new_db
         })
@@ -221,7 +245,7 @@ _conn = _sq3.connect(':memory:')
 _conn.executescript(${JSON.stringify(BOOTSTRAP_SQL)})
 _conn.commit()
 `);
-        const dbBytes = py.runPython("list(_conn.serialize()); _conn.close()") as number[];
+        const dbBytes = py.runPython("_r = list(_conn.serialize()); _conn.close(); _r") as number[];
         if (cancelled) return;
         await py.runPythonAsync(SQL_RUNNER);
         pyRef.current = py;
@@ -275,16 +299,29 @@ _conn = _sq3.connect(':memory:')
 _conn.executescript(${JSON.stringify(BOOTSTRAP_SQL)})
 _conn.commit()
 `);
-      const dbBytes = py.runPython("list(_conn.serialize()); _conn.close()") as number[];
+      const dbBytes = py.runPython("_r = list(_conn.serialize()); _conn.close(); _r") as number[];
       dbRef.current = Array.isArray(dbBytes) ? dbBytes : [];
     } catch { /* ignore */ }
     setLoadState("ready");
   }, []);
 
+  // Auto-run default query once DB is ready
+  const didAutoRun = useRef(false);
+  useEffect(() => {
+    if (loadState === "ready" && !didAutoRun.current && !result && !error) {
+      didAutoRun.current = true;
+      // small delay so the "ready" state renders before running
+      setTimeout(() => {
+        if (pyRef.current) runQuery();
+      }, 150);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadState]);
+
   const isLoading = loadState !== "ready" && loadState !== "idle";
 
   return (
-    <div className="min-h-screen bg-background flex flex-col text-foreground">
+    <div className="h-screen bg-background flex flex-col text-foreground overflow-hidden">
       {/* ── Header ── */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-border/60 bg-card/60 flex-shrink-0">
         <button onClick={onHome} className="text-muted-foreground hover:text-foreground transition-colors text-sm flex items-center gap-1.5">
@@ -474,8 +511,8 @@ _conn.commit()
                     {result.columns.length > 0 && (
                       <div className="overflow-x-auto rounded-xl border border-border/60">
                         <table className="w-full text-xs">
-                          <thead>
-                            <tr className="border-b border-border/60 bg-muted/30">
+                          <thead className="sticky top-0 z-10">
+                            <tr className="border-b border-border/60 bg-muted/60 backdrop-blur-sm">
                               {result.columns.map((col) => (
                                 <th key={col} className="px-3 py-2 text-left font-semibold text-cyan-400 font-mono whitespace-nowrap">
                                   {col}
@@ -573,7 +610,7 @@ _conn.commit()
                       : <AlertTriangle className="h-3 w-3 text-rose-400 flex-shrink-0" />}
                     <span className="text-[10px] text-muted-foreground">{h.elapsed}ms</span>
                   </div>
-                  <pre className="text-[11px] font-mono text-muted-foreground truncate overflow-hidden">{h.sql.split("\n")[0]}</pre>
+                  <div className="text-[11px] font-mono text-muted-foreground truncate overflow-hidden whitespace-nowrap">{h.sql.split("\n")[0]}</div>
                 </button>
               ))}
             </div>
