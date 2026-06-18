@@ -1,237 +1,114 @@
+#!/usr/bin/env python3
 """
-╔══════════════════════════════════════════════════════════════╗
-║           Code Mentor — Запуск проекта                       ║
-╠══════════════════════════════════════════════════════════════╣
-║  Использование:  python run.py                               ║
-║  Требования:     Node.js 18+  (https://nodejs.org)           ║
-╚══════════════════════════════════════════════════════════════╝
+Code Mentor — ULTRA FAST START
+Служит предсобранный dist через Flask. Работает без Node.js.
+
+Первый запуск: нужен собранный dist.
+  Windows:  set BASE_PATH=/ && pnpm --filter @workspace/code-mentor run build
+  Linux/Mac: BASE_PATH=/ pnpm --filter @workspace/code-mentor run build
+
+Затем: python run.py
 """
 
-import subprocess
-import sys
 import os
+import sys
 import platform
-import time
-import shutil
-import signal
 import webbrowser
-import threading
+from pathlib import Path
 
-# ── Цвета в терминале ─────────────────────────────────────────
 WIN = platform.system() == "Windows"
 
 def c(text, code):
-    if WIN:
-        return text
-    return f"\033[{code}m{text}\033[0m"
+    return text if WIN else f"\033[{code}m{text}\033[0m"
 
 def ok(msg):   print(c(f"  ✓  {msg}", "32"))
 def info(msg): print(c(f"  →  {msg}", "36"))
-def warn(msg): print(c(f"  !  {msg}", "33"))
 def err(msg):  print(c(f"  ✗  {msg}", "31"))
-def header(msg): print(c(f"\n{'─'*54}\n  {msg}\n{'─'*54}", "1;34"))
 
+# ── Пути ──────────────────────────────────────────────────────
+if getattr(sys, "frozen", False):
+    ROOT_DIR = Path(sys.executable).parent
+else:
+    ROOT_DIR = Path(__file__).resolve().parent
 
-# ── Проверка Node.js ───────────────────────────────────────────
-def check_node():
-    header("Проверка Node.js")
-    node = shutil.which("node")
-    if not node:
-        err("Node.js не найден!")
-        print()
-        print("  Скачай и установи Node.js (LTS) с сайта:")
-        print(c("  https://nodejs.org/en/download", "4;36"))
-        print()
-        print("  После установки перезапусти этот скрипт.")
-        sys.exit(1)
+DIST_DIR = ROOT_DIR / "artifacts" / "code-mentor" / "dist" / "public"
 
-    result = subprocess.run(["node", "--version"], capture_output=True, text=True)
-    version = result.stdout.strip()
-    major = int(version.lstrip("v").split(".")[0])
-    if major < 18:
-        err(f"Node.js {version} слишком старый. Нужна версия 18+.")
-        print("  Обнови Node.js: https://nodejs.org")
-        sys.exit(1)
-    ok(f"Node.js {version}")
+# ── Проверяем наличие dist ────────────────────────────────────
+if not DIST_DIR.exists():
+    err("Папка dist не найдена!")
+    print()
+    print("  Сначала собери проект одной командой:")
+    print()
+    if WIN:
+        print(c("  set BASE_PATH=/ && pnpm --filter @workspace/code-mentor run build", "1;33"))
+    else:
+        print(c("  BASE_PATH=/ pnpm --filter @workspace/code-mentor run build", "1;33"))
+    print()
+    print(f"  Ожидаемая папка: {DIST_DIR}")
+    sys.exit(1)
 
+ok(f"dist найден: {DIST_DIR}")
 
-# ── Установка / проверка pnpm ──────────────────────────────────
-def ensure_pnpm():
-    header("Проверка pnpm")
-    if shutil.which("pnpm"):
-        result = subprocess.run(["pnpm", "--version"], capture_output=True, text=True)
-        ok(f"pnpm {result.stdout.strip()}")
-        return
-
-    warn("pnpm не найден — устанавливаю через npm...")
+# ── Flask ─────────────────────────────────────────────────────
+try:
+    from flask import Flask, send_from_directory, send_file
+except ImportError:
+    info("Flask не найден — устанавливаю...")
+    import subprocess
     ret = subprocess.run(
-        ["npm", "install", "-g", "pnpm"],
-        capture_output=False,
+        [sys.executable, "-m", "pip", "install", "flask", "--quiet"],
+        check=False,
     ).returncode
     if ret != 0:
-        err("Не удалось установить pnpm.")
-        print("  Попробуй вручную: npm install -g pnpm")
+        err("Не удалось установить Flask. Попробуй вручную: pip install flask")
         sys.exit(1)
-    ok("pnpm установлен")
+    from flask import Flask, send_from_directory, send_file
+    ok("Flask установлен")
 
+# ── Приложение ────────────────────────────────────────────────
+flask_app = Flask(__name__, static_folder=None)
 
-# ── Установка зависимостей ─────────────────────────────────────
-def install_deps():
-    header("Установка зависимостей")
-    info("pnpm install  (первый раз может занять 1-2 минуты)")
-    ret = subprocess.run(
-        ["pnpm", "install", "--frozen-lockfile"],
-        cwd=ROOT,
-    ).returncode
-    if ret != 0:
-        warn("--frozen-lockfile не прошёл, пробую без флага...")
-        ret = subprocess.run(["pnpm", "install"], cwd=ROOT).returncode
-    if ret != 0:
-        err("Ошибка установки зависимостей.")
-        sys.exit(1)
-    ok("Зависимости установлены")
+@flask_app.after_request
+def set_headers(response):
+    # Обязательно для Pyodide SharedArrayBuffer (офлайн Python)
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+    response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
+    # Без кэша — чтобы обновления dist сразу отображались
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
+@flask_app.route("/", defaults={"path": ""})
+@flask_app.route("/<path:path>")
+def serve(path):
+    # Если это реальный файл — отдаём его
+    target = DIST_DIR / path if path else None
+    if path and target and target.is_file():
+        return send_from_directory(str(DIST_DIR), path)
+    # Иначе — SPA: всегда возвращаем index.html
+    return send_file(str(DIST_DIR / "index.html"))
 
-# ── Запуск серверов ────────────────────────────────────────────
-PROCS = []
+# ── Запуск ────────────────────────────────────────────────────
+PORT = int(os.environ.get("PORT", 3000))
+url  = f"http://localhost:{PORT}"
 
-def start_server(name, cmd, cwd, port, color_code):
-    """Запускает сервер в подпроцессе и стримит его вывод с префиксом."""
-    prefix = c(f"[{name}]", color_code)
-
-    def _stream(proc):
-        for line in iter(proc.stdout.readline, b""):
-            try:
-                print(f"{prefix} {line.decode('utf-8', errors='replace').rstrip()}")
-            except Exception:
-                pass
-
-    proc = subprocess.Popen(
-        cmd,
-        cwd=cwd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        shell=WIN,
-    )
-    PROCS.append(proc)
-    thread = threading.Thread(target=_stream, args=(proc,), daemon=True)
-    thread.start()
-    return proc
-
-
-def wait_for_port(port, timeout=60):
-    """Ждём пока порт станет доступен (сервер поднялся)."""
-    import socket
-    deadline = time.time() + timeout
-    while time.time() < deadline:
-        try:
-            with socket.create_connection(("127.0.0.1", port), timeout=1):
-                return True
-        except OSError:
-            time.sleep(0.5)
-    return False
-
-
-# ── Обработка Ctrl+C ──────────────────────────────────────────
-def shutdown(sig=None, frame=None):
-    print(c("\n\n  Останавливаю серверы...", "33"))
-    for p in PROCS:
-        try:
-            if WIN:
-                p.terminate()
-            else:
-                os.killpg(os.getpgid(p.pid), signal.SIGTERM)
-        except Exception:
-            try:
-                p.terminate()
-            except Exception:
-                pass
-    print(c("  Готово. До свидания!", "32"))
-    sys.exit(0)
-
-
-# ═══════════════════════════════════════════════════════════════
-# MAIN
-# ═══════════════════════════════════════════════════════════════
-
-ROOT = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.join(ROOT, "artifacts", "code-mentor")
-API_DIR      = os.path.join(ROOT, "artifacts", "api-server")
-
-FRONTEND_PORT = 3000
-API_PORT      = 5000
-
-print(c("""
-╔══════════════════════════════════════════════════════════════╗
-║              Code Mentor  ·  Запуск проекта                  ║
-╚══════════════════════════════════════════════════════════════╝
+print(c(f"""
+  ╔═══════════════════════════════════════════╗
+  ║         Code Mentor  ·  Быстрый старт    ║
+  ╚═══════════════════════════════════════════╝
 """, "1;34"))
 
-signal.signal(signal.SIGINT, shutdown)
-if not WIN:
-    signal.signal(signal.SIGTERM, shutdown)
+info(f"Открываю браузер: {url}")
+webbrowser.open(url)
 
-check_node()
-ensure_pnpm()
-install_deps()
+print(c(f"  Сайт доступен на {url}", "1;32"))
+print(c("  Нажми Ctrl+C чтобы остановить\n", "36"))
 
-header("Запуск серверов")
-
-# Фронтенд (React + Vite)
-info("Запускаю фронтенд (React + Vite)...")
-start_server(
-    name="WEB",
-    cmd=["pnpm", "--filter", "@workspace/code-mentor", "run", "dev"],
-    cwd=ROOT,
-    port=FRONTEND_PORT,
-    color_code="1;32",
+flask_app.run(
+    host="127.0.0.1",
+    port=PORT,
+    debug=False,
+    use_reloader=False,
+    threaded=True,
 )
-
-# API-сервер (Express)
-has_api = os.path.isdir(API_DIR)
-if has_api:
-    info("Запускаю API-сервер (Express)...")
-    start_server(
-        name="API",
-        cmd=["pnpm", "--filter", "@workspace/api-server", "run", "dev"],
-        cwd=ROOT,
-        port=API_PORT,
-        color_code="1;35",
-    )
-
-# Ждём пока фронтенд поднимется
-info(f"Жду готовности фронтенда на порту {FRONTEND_PORT}...")
-ready = wait_for_port(FRONTEND_PORT, timeout=90)
-
-print()
-if ready:
-    url = f"http://localhost:{FRONTEND_PORT}"
-    print(c(f"""
-  ╔═══════════════════════════════════════════╗
-  ║  ✓  Сайт запущен!                         ║
-  ║                                           ║
-  ║  Открывай в браузере:                     ║
-  ║  {url:<43}║
-  ║                                           ║
-  ║  Нажми Ctrl+C чтобы остановить            ║
-  ╚═══════════════════════════════════════════╝
-""", "1;32"))
-    # Открываем браузер автоматически
-    time.sleep(1)
-    webbrowser.open(url)
-else:
-    warn("Сервер не ответил за 90 секунд. Проверь вывод выше.")
-    print(f"  Попробуй открыть вручную: http://localhost:{FRONTEND_PORT}")
-
-print(c("  Серверы работают. Для остановки нажми Ctrl+C\n", "36"))
-
-# Держим процесс живым
-try:
-    while True:
-        # Проверяем что фронтенд ещё жив
-        if PROCS and PROCS[0].poll() is not None:
-            err("Фронтенд неожиданно завершился.")
-            shutdown()
-        time.sleep(2)
-except KeyboardInterrupt:
-    shutdown()
