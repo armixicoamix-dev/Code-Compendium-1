@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { renderInline, renderRichText } from "@/lib/richText";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -1637,7 +1638,7 @@ export function FlashcardMode({ onHome }: { onHome: () => void }) {
                     {current.category}
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold leading-snug mb-6">
-                    {current.front}
+                    {renderInline(current.front)}
                   </h2>
                   <div className="text-xs text-muted-foreground flex items-center gap-1.5">
                     <RotateCcw className="h-3.5 w-3.5" />
@@ -1658,8 +1659,8 @@ export function FlashcardMode({ onHome }: { onHome: () => void }) {
                   </div>
 
                   {/* Explanation text */}
-                  <div className="text-sm sm:text-base text-foreground/90 leading-relaxed whitespace-pre-line mb-4">
-                    {current.back}
+                  <div className="text-sm sm:text-base text-foreground/90 leading-relaxed mb-4">
+                    {renderRichText(current.back)}
                   </div>
 
                   {/* Annotated code */}
